@@ -1,152 +1,342 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Expansão Cultural</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Ícones Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Estilos da equipe -->
-  <link rel="stylesheet" href="./css/styles.css">
-  
-</head>
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand" href="#inicio">
-        <img src="./img/logo_exp_top.png" alt="Logo ONG">
-        Expansão Cultural
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="#inicio">Início</a></li>
-          <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
-          <li class="nav-item"><a class="nav-link" href="#noticias">Notícias</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Início / Carrossel -->
-  <section id="inicio" class="mt-5 pt-4">
-    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img src="./img/prefeitosp.png" class="d-block w-100" alt="Ação Social 1">
-        </div>
-        <div class="carousel-item">
-          <img src="./img/curso_zumba.webp" class="d-block w-100" alt="Ação Social 2">
-        </div>
-        <div class="carousel-item">
-          <img src="./img/cozinha.png" class="d-block w-100" alt="Ação Social 3">
-        </div>
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
-    </div>
-  </section>
-
-  <!-- Sobre -->
-  <section id="sobre" class="py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Sobre Nós</h2>
-      <p class="lead text-center">
-        A <strong>ONG Expansão Cultural</strong> é uma instituição independente, que atua com o objetivo de promover a inclusão e dignidade social como instrumento de humanização da população fragilizada da região do Capão Redondo. 
-      </p>
-    </div>
-  </section>
-
-  <!-- Notícias / Cards -->
-  <section id="noticias" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-5">Nossos Projetos e Cursos</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="./img/curso_ti.webp" class="card-img-top" alt="Curso 1">
-            <div class="card-info">
-              Curso de TI
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="./img/curso_capoeira.webp" class="card-img-top" alt="Curso 2">
-            <div class="card-info">
-              Grupo de Capoeira
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card shadow-sm">
-            <img src="./img/curso_ballet.webp" class="card-img-top" alt="Curso 3">
-            <div class="card-info">
-              Curso de Ballet Infantil
-            </div>
-          </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expansão Cultural</title>
+    <!-- Bootstrap CSS --><link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Ícones Bootstrap --><link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <!-- Estilos da equipe --><link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <!-- Navbar --><nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="#inicio">
+          <img src="./img/logo_exp_top.png" alt="Logo ONG" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#inicio">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#sobre">Sobre</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#noticias">Projetos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#contato">Contato</a>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
-  </section>
+    </nav>
 
-  <!-- Contato -->
-  <section id="contato" class="py-5">
+    <!-- Início / Hero Section com Imagem Única (CORRIGIDO) --><section id="inicio" class="hero-section">
+      <!-- A imagem agora é definida como background no CSS para cobrir toda a seção --><!-- O conteúdo textual fica diretamente aqui, centralizado --><div class="hero-content">
+        <h1>Expansão Cultural</h1>
+        <p class="lead">Promovendo inclusão e dignidade social</p>
+      </div>
+    </section>
+
+  <!-- Sobre --><!-- 
+    Seção 'Sobre' redesenhada com Card Central e 3 Cards Suspensos.
+    O fundo 'bg-light' foi mantido.
+  --><section id="sobre" class="py-5 bg-light">
     <div class="container">
-      <h2 class="text-center mb-5">Entre em Contato</h2>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <form>
-            <div class="mb-3">
-              <label for="nome" class="form-label">Nome</label>
-              <input type="text" class="form-control" id="nome" placeholder="Seu nome" required>
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">E-mail</label>
-              <input type="email" class="form-control" id="email" placeholder="seuemail@exemplo.com" required>
-            </div>
-            <div class="mb-3">
-              <label for="mensagem" class="form-label">Mensagem</label>
-              <textarea class="form-control" id="mensagem" rows="4" placeholder="Escreva sua mensagem..." required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Enviar Mensagem</button>
-          </form>
-        </div>
-        <div class="col-md-6">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.000000000000!2d-46.745327!3d-23.6533126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf000000000000%3A0x0000000000000000!2sRua+Maporé+25A%2C+Jardim+Casablanca%2C+São+Paulo+SP!5e0!3m2!1spt-BR!2sbr!4v1706740000000!5m2!1spt-BR!2sbr"
-            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      
+      <!-- 
+        Row 1: O "Card Central" com o texto principal.
+        Adicionei 'mb-5' (margin-bottom 5) para dar espaço para os cards abaixo.
+      --><div class="row justify-content-center mb-5">
+        <div class="col-lg-10 col-xl-8">
+          <div class="bg-white p-4 p-md-5 rounded-3 shadow-lg">
+            <h2 class="text-center mb-4">Sobre Nós</h2>
             
+            <!-- 
+              NOVO DIV ADICIONADO AQUI
+              Este 'wrapper' (recipiente) serve para aplicarmos
+              a barra de rolagem apenas no texto, no mobile.
+            --><div class="sobre-nos-text-wrapper">
+              <p class="lead" style="text-align: justify;">
+                A <strong>ONG Expansão Cultural</strong> é uma instituição independente dedicada a promover inclusão e dignidade social, atuando como instrumento de humanização para moradores de áreas vulneráveis do Capão Redondo. 
+  No início, nosso trabalho era voltado exclusivamente para um grupo de mulheres que necessitavam de apoio psicológico, hoje ampliamos nosso alcance e atendemos toda a comunidade, oferecendo assistência integral e oportunidades de desenvolvimento. 
+  Contamos com parcerias essenciais para cumprir nossa missão. Em colaboração com a UBS, garantimos atendimento psicológico, e, com o apoio da Prefeitura de São Paulo, mantemos uma cozinha solidária que distribui, em média, 500 marmitas gratuitas todos os dias. 
+  Além disso, oferecemos atividades extracuriculares como judô, capoeira, cursos de empreendedorismo e aulas de inglês e espanhol. A comunidade também pode participar do projeto Cozinha Escola, uma iniciativa gratuita da prefeitura voltada para formação gastronômica.
+              </p>
+            </div>
+            <!-- Fim do novo div wrapper --></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="mb-3">
-        <a href="#"><i class="bi bi-facebook"></i></a>
-        <a href="#"><i class="bi bi-instagram"></i></a>
-        <a href="#"><i class="bi bi-twitter-x"></i></a>
-        <a href="#"><i class="bi bi-youtube"></i></a>
+      <!-- 
+        Row 2: Os "3 Cards Suspensos" (Missão, Visão, Valores)
+        'g-4' adiciona espaçamento entre os cards.
+      --><div class="row g-4">
+        
+        <!-- Card Missão --><div class="col-lg-4 d-flex">
+          <div class="card shadow-sm w-100">
+            <div class="card-body text-center p-4">
+              <!-- Ícone Circular (usando a cor vermelha do seu CSS) --><i class="bi bi-bullseye text-danger" style="font-size: 3rem;"></i>
+              <h5 class="card-title text-dark fw-bold mt-3 mb-3">Missão</h5>
+              <p class="card-text text-muted" style="text-align: justify;">
+                Promover a inclusão, a dignidade e a transformação social da população em situação de vulnerabilidade do Capão Redondo, oferecendo acolhimento, capacitação profissional e acesso à saúde, esporte e cultura como ferramentas para o desenvolvimento humano e a conquista da autonomia.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Visão --><div class="col-lg-4 d-flex">
+          <div class="card shadow-sm w-100">
+            <div class="card-body text-center p-4">
+              <!-- Ícone Circular --><i class="bi bi-eye text-danger" style="font-size: 3rem;"></i>
+              <h5 class="card-title text-dark fw-bold mt-3 mb-3">Visão</h5>
+              <p class="card-text text-muted" style="text-align: justify;">
+                Ser um centro de referência em desenvolvimento comunitário e humanização, transformando a realidade local para que cada indivíduo se sinta valorizado, seguro e empoderado para construir um futuro com mais oportunidades e dignidade.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Valores --><div class="col-lg-4 d-flex">
+          <div class="card shadow-sm w-100">
+            <div class="card-body text-center p-4">
+              <!-- Ícone Circular --><i class="bi bi-gem text-danger" style="font-size: 3rem;"></i>
+              <h5 class="card-title text-dark fw-bold mt-3 mb-3">Valores</h5>
+              <!-- O texto de 'Valores' é uma lista, formatei como <ul> --><ul class="list-unstyled text-start text-muted" style="font-size: 0.9rem;">
+                <li><strong>Acolhimento:</strong> Criar um ambiente seguro e empático.</li>
+                <li><strong>Dignidade:</strong> Tratar cada pessoa com respeito.</li>
+                <li><strong>Empoderamento:</strong> Oferecer conhecimento e ferramentas.</li>
+                <li><strong>Comunidade:</strong> Fortalecer os laços comunitários.</li>
+                <li><strong>Transformação:</strong> Acreditar no poder da educação e do cuidado.</li>
+                <li><strong>Cuidado Integral:</strong> Atender às diversas necessidades do ser humano.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- Fim da Row 2 (g-4) --></div> <!-- Fim do Container --></section>
+
+  <!-- Notícias / Cards --><section
+      id="noticias"
+      class="py-5"
+      style="text-shadow: 3px 3px 9px #46ff0d"
+    >
+      <div class="container">
+        <h2 class="text-center mb-5">Nossos Projetos e Cursos</h2>
+        <div class="row g-4">
+          <!-- Card 1: TI (COM HTML CORRIGIDO E TEXTO SUCINTO) --><div class="col-md-4">
+            <div class="flip-card">
+              <div class="flip-card-inner shadow-sm">
+                <!-- FRENTE --><div class="flip-card-front">
+                  <img src="./img/curso_ti.webp" alt="Curso de TI" />
+                  <div class="card-info">Curso de TI</div>
+                </div>
+                <!-- VERSO (HTML CORRIGIDO) --><div class="flip-card-back">
+                  <h5>Curso de TI para Jovens da Periferia</h5>
+                  <p
+                    style="
+                      text-align: left;
+                      font-size: 0.85rem;
+                      line-height: 1.5;
+                    "
+                  >
+                    Uma ponte direta para o mercado de trabalho para jovens da
+                    periferia.
+                    <br /><br />
+                    Este programa intensivo foca em habilidades de alta demanda:
+                  </p>
+                  <!-- Lista separada do <p> para HTML válido --><ul
+                    style="
+                      font-size: 0.85rem;
+                      text-align: left;
+                      margin-top: -10px;
+                    "
+                  >
+                    <li>Lógica de Programação</li>
+                    <li>Desenvolvimento Web (Front/Back-end)</li>
+                    <li>Noções de Inteligência Artificial</li>
+                  </ul>
+                  <p
+                    style="
+                      text-align: left;
+                      font-size: 0.85rem;
+                      line-height: 1.5;
+                    "
+                  >
+                    A capacitação vai além do código, incluindo mentorias de
+                    <i>soft skills</i> (comunicação, trabalho em equipe) e
+                    oficinas de empregabilidade.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Capoeira (COM TEXTO SUCINTO) --><div class="col-md-4">
+            <div class="flip-card">
+              <div class="flip-card-inner shadow-sm">
+                <!-- FRENTE --><div class="flip-card-front">
+                  <img
+                    src="./img/curso_capoeira.webp"
+                    alt="Grupo de Capoeira"
+                  />
+                  <div class="card-info">Grupo de Capoeira</div>
+                </div>
+                <!-- VERSO (TEXTO SUCINTO) --><div class="flip-card-back">
+                  <h5>Capoeira: Identidade e Resistência</h5>
+                  <p style="text-align: left; font-size: 0.9rem">
+                    Um projeto de transformação social focado na história de
+                    resistência e cultura afro-brasileira, oferecido de forma
+                    gratuita.
+                    <br /><br />
+                    Com mestres locais, o programa usa a ginga, o ritmo e a
+                    disciplina da roda para construir:
+                  </p>
+                  <ul style="font-size: 0.9rem; text-align: left">
+                    <li>Autoestima e senso de pertencimento</li>
+                    <li>Fundamentos técnicos e musicais</li>
+                    <li>Respeito mútuo e cooperação</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Ballet (COM TEXTO SUCINTO) --><div class="col-md-4">
+            <div class="flip-card">
+              <div class="flip-card-inner shadow-sm">
+                <!-- FRENTE --><div class="flip-card-front">
+                  <img
+                    src="./img/curso_ballet.webp"
+                    alt="Curso de Ballet Infantil"
+                  />
+                  <div class="card-info">Curso de Ballet Infantil</div>
+                </div>
+                <!-- VERSO (TEXTO SUCINTO) --><div class="flip-card-back">
+                  <h5>Balé para Sonhar e Crescer</h5>
+                  <p style="text-align: left; font-size: 0.9rem">
+                    Um convite gratuito para crianças da periferia descobrirem
+                    a disciplina e a graça da dança, quebrando barreiras.
+                    <br /><br />
+                    É um espaço seguro e inspirador para desenvolver:
+                  </p>
+                  <ul style="font-size: 0.9rem; text-align: left">
+                    <li>Coordenação motora e flexibilidade</li>
+                    <li>Autoconfiança e foco</li>
+                    <li>Técnica de forma lúdica e divertida</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <p>&copy; 2025 ONG Expansão Cultural. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+    </section>
 
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <!-- Contato --><section id="contato" class="py-5" style="text-shadow: 3px 3px 9px #46ff0d">
+      <div class="container">
+        <h2 class="text-center mb-5">Entre em Contato</h2>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <form>
+              <div class="mb-3">
+                <label for="nome" class="form-label">Nome</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nome"
+                  placeholder="Seu nome"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">E-mail</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="seuemail@exemplo.com"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="mensagem" class="form-label">Mensagem</label>
+                <textarea
+                  class="form-control"
+                  id="mensagem"
+                  rows="4"
+                  placeholder="Escreva sua mensagem..."
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-light w-100">
+                Enviar Mensagem
+              </button>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3652.000000000000!2d-46.745327!3d-23.6533126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cf000000000000%3A0x0000000000000000!2sRua+Maporé+25A%2C+Jardim+Casablanca%2C+São+Paulo+SP!5e0!3m2!1spt-BR!2sbr!4v1706740000000!5m2!1spt-BR!2sbr"
+              width="100%"
+              height="100%"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer --><footer>
+      <div class="container">
+        <div class="mb-3">
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-twitter-x"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+        <p>&copy; 2025 ONG Expansão Cultural. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS --><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- 
+    INÍCIO DO SCRIPT PARA FLIP CARD
+  --><script>
+      // Espera o documento carregar completamente
+      document.addEventListener("DOMContentLoaded", function () {
+        // Seleciona todos os cards com a classe .flip-card
+        const flipCards = document.querySelectorAll(".flip-card");
+
+        // Adiciona um evento de 'clique' em cada card
+        flipCards.forEach((card) => {
+          card.addEventListener("click", function () {
+            // Adiciona ou remove a classe 'is-flipped' no .flip-card (o container pai)
+            this.classList.toggle("is-flipped");
+          });
+        });
+      });
+    </script>
+    <!-- FIM DO SCRIPT PARA FLIP CARD --></body>
 </html>

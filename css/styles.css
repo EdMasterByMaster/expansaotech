@@ -1,48 +1,216 @@
 body {
-      scroll-behavior: smooth;
-    }
+  scroll-behavior: smooth;
+  background-color: #e7e7e7f5;
+}
 
-    /* Navbar */
-    .navbar-brand img {
-      height: 40px;
-    }
+/* Navbar */
+.navbar-brand img {
+  height: 40px;
+}
+.navbar-light {
+  background-color: #fac282;
+}
+.nav-link {
+  font-family: sans-serif;
+  color: #E3242B;
+  text-shadow: 1px 1px 8px #a0a0a0;
+}
 
-    /* Carrossel */
-    .carousel-item img {
-      height: 70vh;
-      object-fit: cover;
-    }
+/* --- Hero Section com Imagem Única (CORRIGIDO) --- */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* Ajuste a altura conforme necessário */
+  display: flex; /* Usar flexbox para centralizar conteúdo */
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  text-align: center;
+  color: white; /* Cor do texto principal */
+  
+  /* Aqui definimos a imagem de fundo e suas propriedades */
+  background-image: url('../img/cozinha.png'); /* Caminho para sua imagem */
+  background-size: cover; /* Faz a imagem cobrir toda a área */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat; /* Evita repetição */
+  
+  /* Adiciona um overlay escuro diretamente na seção para o texto se destacar */
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.4); /* Escurece a imagem */
+}
 
-    /* Cards */
-    .card-info {
-      background-color: hsl(17, 100%, 50%);
-      color: white;
-      padding: 10px;
-      text-align: center;
-      border-radius: 0 0 5px 5px;
-    }
+.hero-content {
+  position: relative; /* Garante que o conteúdo textual fique acima do background */
+  z-index: 2; /* Para garantir que o texto apareça sobre a imagem */
+  padding: 20px; /* Um pouco de padding para o texto */
+}
 
-    /* Contato */
-    #contato form {
-      background-color: #f8f9fa;
-      padding: 20px;
-      border-radius: 10px;
-    }
+.hero-content h1 {
+  font-size: 4rem; /* Tamanho do título principal */
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Sombra para o texto */
+}
 
-    /* Footer */
-    footer {
-      background-color: #010813;
-      color: white;
-      text-align: center;
-      padding: 20px 0;
-    }
+.hero-content p {
+  font-size: 1.5rem; /* Tamanho do subtítulo */
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7); /* Sombra para o subtítulo */
+}
 
-    footer a {
-      color: white;
-      margin: 0 10px;
-      font-size: 1.5rem;
-    }
+/*
+  AJUSTE: Define a cor do subtítulo na hero section para o laranja,
+  sobrescrevendo o preto da classe .lead global.
+*/
+.hero-content .lead {
+  color: #fac282; 
+}
 
-    footer a:hover {
-      color: #dcdcdc;
-    }
+
+/* --- Estilos Gerais de Seção --- */
+.py-5 {
+  font-family: sans-serif;
+  color: #E3242B;
+}
+.lead {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+}
+
+/* --- Estilos do Flip Card --- */
+
+/* Esta regra .card-info foi combinada: 
+  - Layout (position: absolute) dos estilos anteriores.
+  - Aparência (cor, fundo) dos seus novos estilos.
+*/
+.card-info {
+  font-family: sans-serif;
+  font-size: large;
+  background-color: #E3242B;
+  color: #ffffff;
+  text-shadow: 3px 3px 9px #000000;
+  padding: 12px;
+  text-align: center;
+  
+  /* Layout essencial para o flip card */
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  
+  /* Arredondando apenas os cantos inferiores */
+  border-radius: 0 0 5px 5px;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: 400px; 
+  perspective: 1000px;
+  cursor: pointer;
+}
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+.flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden; 
+  border-radius: var(--bs-border-radius);
+}
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+.flip-card-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flip-card-back {
+  background-color: #ffffff;
+  color: #333;
+  padding: 25px;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  text-shadow: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.flip-card-back h5 {
+  color: #0d6efd;
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+.flip-card-back p {
+  font-size: 0.9rem;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* --- Contato --- */
+.form-label {
+  font-family: sans-serif;
+  color: #ffffff;
+}
+#contato form {
+  background-color: #E3242B;
+  text-shadow: 1px 1px 3px #000000;
+  padding: 20px;
+  border-radius: 10px;
+}
+.btn-primary {
+  font-family: sans-serif;
+  font-size: large;
+  background-color: #E3242B;
+  color: #ffffff;
+}
+
+/* Footer */
+footer {
+  background-color: #E3242B;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+footer a {
+  color: white;
+  margin: 0 10px;
+  font-size: 1.5rem;
+}
+footer a:hover {
+  color: #dcdcdc;
+}
+
+/* --- Ajustes Responsivos --- */
+@media (max-width: 767px) {
+  
+  /* Ajusta a altura da hero section para mobile */
+  .hero-section {
+    height: 60vh; /* Um pouco menos alto no celular */
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem; 
+  }
+
+  .hero-content p {
+    font-size: 1.1rem;
+  }
+
+  /* Adiciona scroll ao texto "Sobre Nós" em telas pequenas */
+  .sobre-nos-text-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+  }
+}
