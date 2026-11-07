@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Eventos | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page">
+    <div class="section-heading section-heading-row">
+        <div><p class="eyebrow">Agenda</p><h1>Eventos</h1></div>
+        <a class="button button-primary" th:href="@{/admin/eventos/novo}">Novo evento</a>
+    </div>
+    <p th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}" role="status"></p>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Evento</th><th>Data e hora</th><th>Local</th><th>ONG</th><th>Ações</th></tr></thead>
+            <tbody>
+            <tr th:each="evento : ${eventos}">
+                <td th:text="${evento.titulo}"></td><td th:text="${#temporals.format(evento.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${evento.localEvento}"></td><td th:text="${evento.ong.nome}"></td>
+                <td class="table-actions">
+                    <a class="text-link" th:href="@{/admin/eventos/{id}/editar(id=${evento.id})}">Editar</a>
+                    <form th:action="@{/admin/eventos/{id}/excluir(id=${evento.id})}" method="post">
+                        <button class="text-button danger" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${#lists.isEmpty(eventos)}" class="empty-state">Nenhum evento cadastrado.</p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

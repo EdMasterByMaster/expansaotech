@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ONGs | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page">
+    <div class="section-heading section-heading-row">
+        <div><p class="eyebrow">Cadastro</p><h1>ONGs</h1></div>
+        <a class="button button-primary" th:href="@{/admin/ongs/nova}">Nova ONG</a>
+    </div>
+    <p th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}" role="status"></p>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Nome</th><th>CNPJ</th><th>E-mail</th><th>Ações</th></tr></thead>
+            <tbody>
+            <tr th:each="ong : ${ongs}">
+                <td th:text="${ong.nome}"></td><td th:text="${ong.cnpj}"></td><td th:text="${ong.email}"></td>
+                <td class="table-actions">
+                    <a class="text-link" th:href="@{/admin/ongs/{id}/editar(id=${ong.id})}">Editar</a>
+                    <form th:action="@{/admin/ongs/{id}/excluir(id=${ong.id})}" method="post">
+                        <button class="text-button danger" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${#lists.isEmpty(ongs)}" class="empty-state">Nenhuma ONG cadastrada.</p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

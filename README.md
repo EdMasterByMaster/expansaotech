@@ -1,93 +1,101 @@
-# 🚀 Expansão Tech
-Projeto de integração - FATEC MAUÁ - Curso Informática para Negócios
+# Expansão Tech
 
-![Status do Projeto](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![GitHub Pages](https://img.shields.io/badge/deploy-GitHub%20Pages-222222?logo=github)
+Aplicação web da Associação Expansão Cultural: portal público, painel administrativo e API REST em Java/Spring Boot, com Microsoft SQL Server. As páginas são renderizadas no servidor com Thymeleaf e usam HTML/CSS sem JavaScript.
 
-> Projeto de desenvolvimento de uma landing page para a ONG Associação Expansão Cultural, visando ampliar seu alcance digital e divulgar suas iniciativas. Este trabalho é parte da disciplina de Informática e Negócios do 1° semestre.
+## Funcionalidades
 
----
+- Portal público com cursos e eventos publicados.
+- Login administrativo; senhas armazenadas com BCrypt e sem credenciais padrão.
+- Painel para cadastrar, consultar, editar e excluir ONGs, usuários, professores, cursos e eventos.
+- API REST JSON para as mesmas entidades e regras, com validação e autenticação HTTP Basic para operações administrativas.
+- Schema SQL Server baseado nas entidades e relações do modelo fornecido: `Ong`, `Usuario`, `Professor`, `Curso` e `Evento`.
+- Interface responsiva que reaproveita a identidade visual e as imagens existentes.
 
-## 🎯 Sobre o Projeto
+O modelo fornecido não inclui inscrições, capacidade de eventos, pagamentos ou e-commerce; esses recursos não fazem parte deste escopo. A landing page da raiz continua disponível para GitHub Pages como versão estática; o backend Spring precisa ser executado em um host Java/Docker e não pode ser servido pelo GitHub Pages.
 
-Este projeto consiste no desenvolvimento de uma presença online para a **Associação Expansão Cultural**, uma ONG com 3 anos de atuação no Jardim São Luís, Zona Sul de São Paulo. A organização tem um forte compromisso com a comunidade, promovendo a inclusão social através de projetos nas áreas de saúde, esporte, beleza, artesanato, idiomas e tecnologia.
+## Executar a aplicação completa com Docker
 
-A iniciativa **Expansão Tech** busca criar um canal digital para que a ONG possa divulgar seus projetos, eventos e, consequentemente, atrair novos colaboradores e um público mais amplo.
+Requisitos: Docker Desktop com Docker Compose.
 
-### ✨ Fase 1: Landing Page
+1. Copie `.env.example` para `.env`.
+2. Gere e configure uma senha forte para `MSSQL_SA_PASSWORD` (SQL Server exige senha complexa). Para criar o primeiro administrador, configure também `APP_ADMIN_EMAIL`, `APP_ADMIN_PASSWORD` (mínimo de 12 caracteres), `APP_ADMIN_CPF` e, opcionalmente, `APP_ADMIN_NAME`. As três variáveis do administrador são necessárias em conjunto. Sem elas, o app inicia sem usuário administrativo inicial.
+3. Execute `docker compose up --build`.
+4. Acesse <http://localhost:8080>; o portal público fica em `/`, e a administração em `/login`.
 
-A fase inicial contempla a criação de uma landing page responsiva e informativa. O site apresentará a história da instituição, sua missão, valores e todos os serviços e projetos que ela oferece à comunidade.
+O Compose inicia o SQL Server, aguarda a disponibilidade do banco, aplica `sql/schema.sql` quando as tabelas ainda não existem e inicia a aplicação. O volume `expansaodb-data` preserva os dados entre reinicializações. Para encerrar, use `docker compose down`; para apagar os dados, remova explicitamente o volume `expansaodb-data`.
 
----
+Não reutilize a senha de exemplo nem compartilhe o `.env`. O arquivo já está no `.gitignore`.
 
-## 💻 Tecnologias Utilizadas
+## Executar localmente com Maven
 
-O projeto será construído utilizando tecnologias web fundamentais, garantindo uma base sólida, leve e de fácil manutenção.
+Requisitos: JDK 17 ou superior, Maven 3.9+ e SQL Server (local ou pelo serviço `db` do Compose).
 
-| Tecnologia | Descrição |
-| :--- | :--- |
-| **HTML5** | Estruturação e semântica do conteúdo da página. |
-| **CSS3** | Estilização, layout e design responsivo. |
-| **JavaScript** | Interatividade e manipulação dinâmica de elementos. |
-| **Bootstrap** | Framework front-end para agilizar o desenvolvimento de componentes e responsividade. |
+```powershell
+Copy-Item .env.example .env
+docker compose up -d db schema
+```
 
----
+Configure as variáveis de ambiente no terminal e inicie a aplicação:
 
-## 🌐 Acesso ao Site
+```powershell
+$env:DB_PASSWORD = "sua-senha-do-sql-server"
+$env:APP_ADMIN_EMAIL = "admin@exemplo.org"
+$env:APP_ADMIN_PASSWORD = "defina-uma-senha-forte-com-12-caracteres"
+$env:APP_ADMIN_CPF = "informe-um-cpf-cadastrado"
+mvn spring-boot:run
+```
 
-O projeto está disponível para visualização através do GitHub Pages.
+Por padrão, a aplicação conecta a `localhost:1433/Expansaodb`. É possível substituir a conexão com `DB_URL`, `DB_USERNAME` e `DB_PASSWORD`. `spring.jpa.hibernate.ddl-auto=validate` faz a aplicação falhar explicitamente se o schema não corresponder; a aplicação não altera o banco implicitamente.
 
-<strong><a href="https://EdMasterByMaster.github.io/expansaotech/" target="_blank" rel="noopener noreferrer">Clique aqui para acessar o Expansão Tech</a></strong>
+## SQL Server e atualização do modelo
 
----
+- Instalação nova: o Compose executa `sql/schema.sql`; também é possível aplicá-lo manualmente com `sqlcmd`.
+- Banco já criado com o DDL original informado: faça backup e aplique uma única vez `sql/migration-original-model-to-unicode.sql` antes de iniciar a nova versão. O script amplia campos textuais para Unicode e converte datas para `DATETIME2`, preservando os registros e relacionamentos existentes. No Windows, com o serviço `db` iniciado, execute `./sql/migrate-original-model.ps1`.
+- O schema preserva as chaves e exclusões em cascata do modelo para ONG/eventos/cursos e usuário/professor; a exclusão de professor referenciado por curso é bloqueada.
+- As datas de cadastro/criação usam UTC. Configure datas de eventos no horário local pretendido pela ONG.
 
-## 🗺️ Próximos Passos (Roadmap)
+## API REST
 
-Após a entrega da landing page, o projeto tem como visão evoluir para uma aplicação web mais complexa, incluindo as seguintes funcionalidades:
+Base: `/api`. Os catálogos `GET /api/cursos` e `GET /api/eventos` são públicos. Demais operações exigem um usuário `Administracao` via HTTP Basic; em produção, use somente HTTPS.
 
-- [ ] **Transformar o site em uma Web Application.**
-- [ ] **Implementar sistema de login e autenticação de usuários.**
-- [ ] **Desenvolver uma área de cadastros para eventos e cursos.**
-- [ ] **Criar uma seção de e-commerce para o brechó da ONG.**
+| Recurso | Operações |
+|---|---|
+| `/api/ongs` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/usuarios` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/professores` | `GET` (professores são mantidos pelo cadastro de usuário do tipo `Professor`) |
+| `/api/cursos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/eventos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
 
----
+Exemplo de criação de evento:
 
-## 🏢 Organização Parceira
+```json
+{
+  "ongId": 1,
+  "titulo": "Encontro comunitário",
+  "descricao": "Atividade aberta à comunidade",
+  "dataHora": "2026-12-10T14:00:00",
+  "localEvento": "Jardim São Luís",
+  "fotoUrl": ""
+}
+```
 
-- **Nome:** Associação Expansão
-- **CNPJ:** 44.513.328/0001-87
-- **Responsável:** Selma Tristão Natalino
+`UsuarioInput` recebe `cpf`, `nome`, `email`, `senha`, `tipo`, `fotoUrl` e `especialidade` (para professor). A resposta nunca inclui senha/hash. Tipos aceitos correspondem aos valores do schema: `Funcionario`, `Administracao`, `Colaborador`, `Voluntario`, `Professor`, `Doador` e `Aluno`. Erros de validação retornam HTTP 400, recurso inexistente 404 e conflito de integridade 409.
 
----
+## Testes e build
 
-## 🎓 Contexto Acadêmico
+```powershell
+mvn test
+mvn package
+```
 
-- **Curso:** Informática para Negócios - 1° Semestre
-- **Disciplina:** Informática e Negócios
+Os testes usam H2 isolado e cobrem renderização das páginas públicas, acesso anônimo à API, nomes dos tipos e a ausência de JavaScript nos templates. O workflow `.github/workflows/ci.yml` executa `mvn verify` com Java 17.
 
-#### Corpo Docente
-- **Prof. Dr. Bruno Zolotareff dos Santos** (Informática e Negócios)
-- **Profa. Dra. Andreza Maria de Souza Rocha** (Comunicação e Expressão)
-- **Prof. Dr. Jairo Duarte** (Administração Geral)
+## Organização do projeto
 
----
-
-## 👥 Equipe do Projeto
-
-| Componente |
-| :--- |
-| Bianca Baptista Caetano |
-| Márcio Roberto |
-| Ednilson Nascimento Martiniano |
-| Giovanna Karolina Neres da Costa |
-| Isaque Barbosa |
-| Kauã Silva |
-| Natália Ferreira Zaniboni |
-|  Marlene Rosendal |
-| Pablo Rocha de Souza |
-
----
-
-<p align="center">
-  Equipe Expansão Tech (ET's)
-</p>
+- `src/main/java`: domínio, persistência, serviços, segurança, MVC e API.
+- `src/main/resources/templates`: páginas Thymeleaf.
+- `src/main/resources/static/css/app.css`: estilos da aplicação.
+- `sql/schema.sql`: schema SQL Server para instalação nova.
+- `sql/migration-original-model-to-unicode.sql`: atualização preservando dados do DDL original.
+- `compose.yaml` e `Dockerfile`: execução local containerizada.
+- [GitHub Project — Expansaotech - Plataforma Web](https://github.com/users/EdMasterByMaster/projects/2): cards de acompanhamento.

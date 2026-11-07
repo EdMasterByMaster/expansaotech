@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Curso | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page narrow">
+    <p class="eyebrow">Programação</p><h1 th:text="${id != null ? 'Editar curso' : 'Novo curso'}">Curso</h1>
+    <form class="form-card" th:object="${form}"
+          th:action="${id != null ? '/admin/cursos/' + id : '/admin/cursos'}" method="post">
+        <label for="titulo">Título</label><input id="titulo" th:field="*{titulo}" required maxlength="150">
+        <small class="field-error" th:errors="*{titulo}"></small>
+        <label for="ongId">ONG responsável</label><select id="ongId" th:field="*{ongId}" required>
+            <option value="">Selecione</option><option th:each="ong : ${ongs}" th:value="${ong.id}" th:text="${ong.nome}"></option>
+        </select>
+        <small class="field-error" th:errors="*{ongId}"></small>
+        <label for="professorId">Professor(a)</label><select id="professorId" th:field="*{professorId}" required>
+            <option value="">Selecione</option><option th:each="professor : ${professores}" th:value="${professor.id}" th:text="|${professor.usuario.nome} · ${professor.especialidade}|"></option>
+        </select>
+        <small class="field-error" th:errors="*{professorId}"></small>
+        <label for="descricao">Descrição</label><textarea id="descricao" th:field="*{descricao}" rows="5"></textarea>
+        <label for="horario">Horário</label><input id="horario" th:field="*{horario}" required maxlength="100">
+        <small class="field-error" th:errors="*{horario}"></small>
+        <label for="localCurso">Local</label><input id="localCurso" th:field="*{localCurso}" required maxlength="255">
+        <small class="field-error" th:errors="*{localCurso}"></small>
+        <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/cursos}">Cancelar</a></div>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
