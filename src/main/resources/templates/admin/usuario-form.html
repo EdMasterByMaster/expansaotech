@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Usuário | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page narrow">
+    <p class="eyebrow">Acessos e equipe</p><h1 th:text="${id != null ? 'Editar usuário' : 'Novo usuário'}">Usuário</h1>
+    <form class="form-card" th:object="${form}"
+          th:action="${id != null ? '/admin/usuarios/' + id : '/admin/usuarios'}" method="post">
+        <label for="nome">Nome</label><input id="nome" th:field="*{nome}" required maxlength="150">
+        <small class="field-error" th:errors="*{nome}"></small>
+        <label for="cpf">CPF</label><input id="cpf" th:field="*{cpf}" required maxlength="14">
+        <small class="field-error" th:errors="*{cpf}"></small>
+        <label for="email">E-mail</label><input id="email" th:field="*{email}" type="email" required maxlength="100">
+        <small class="field-error" th:errors="*{email}"></small>
+        <label for="senha">Senha <span th:if="${id != null}">(deixe vazia para manter)</span></label>
+        <input id="senha" th:field="*{senha}" type="password" autocomplete="new-password" minlength="12" th:required="${id == null}">
+        <small class="field-error" th:errors="*{senha}"></small>
+        <label for="tipo">Tipo de usuário</label>
+        <select id="tipo" th:field="*{tipo}" required>
+            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo.valorBanco}"></option>
+        </select>
+        <label for="especialidade">Especialidade (obrigatória para professor)</label>
+        <input id="especialidade" th:field="*{especialidade}" maxlength="255">
+        <small class="field-error" th:errors="*{especialidade}"></small>
+        <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/usuarios}">Cancelar</a></div>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

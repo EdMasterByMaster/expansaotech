@@ -10,6 +10,13 @@ body {
 .navbar-light {
   background-color: #fac282;
 }
+.navbar-collapse.collapse {
+  display: flex !important;
+}
+.navbar-nav {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .nav-link {
   font-family: sans-serif;
   color: #E3242B;
@@ -116,6 +123,9 @@ body {
 .flip-card.is-flipped .flip-card-inner {
   transform: rotateY(180deg);
 }
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
 .flip-card-front, .flip-card-back {
   position: absolute;
   width: 100%;
@@ -193,6 +203,9 @@ footer a:hover {
 
 /* --- Ajustes Responsivos --- */
 @media (max-width: 767px) {
+  .navbar-nav {
+    gap: 0.25rem 0.75rem;
+  }
   
   /* Ajusta a altura da hero section para mobile */
   .hero-section {
