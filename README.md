@@ -28,7 +28,7 @@ Não reutilize a senha de exemplo nem compartilhe o `.env`. O arquivo já está 
 
 ## Executar localmente com Maven
 
-Requisitos: JDK 17 ou superior, Maven 3.9+ e SQL Server (local ou pelo serviço `db` do Compose).
+Requisitos: JDK 25 LTS, Maven 3.9+ e SQL Server (local ou pelo serviço `db` do Compose).
 
 ```powershell
 Copy-Item .env.example .env
@@ -56,15 +56,17 @@ Por padrão, a aplicação conecta a `localhost:1433/Expansaodb`. É possível s
 
 ## API REST
 
-Base: `/api`. Os catálogos `GET /api/cursos` e `GET /api/eventos` são públicos. Demais operações exigem um usuário `Administracao` via HTTP Basic; em produção, use somente HTTPS.
+Base recomendada: `/api/dados`. O status da API responde em `GET /api/dados`. Para seguir o padrão de apresentação do projeto de referência, a API inclui Swagger UI em <http://localhost:8080/swagger-ui/index.html> e a especificação OpenAPI em <http://localhost:8080/v3/api-docs>. Nas operações protegidas, use **Authorize** na interface Swagger e informe a conta administrativa.
+
+Os catálogos `GET /api/dados/cursos` e `GET /api/dados/eventos` são públicos. Demais operações exigem um usuário `Administracao` via HTTP Basic; em produção, use somente HTTPS. As rotas anteriores sob `/api` continuam como aliases de compatibilidade.
 
 | Recurso | Operações |
 |---|---|
-| `/api/ongs` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
-| `/api/usuarios` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
-| `/api/professores` | `GET` (professores são mantidos pelo cadastro de usuário do tipo `Professor`) |
-| `/api/cursos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
-| `/api/eventos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/dados/ongs` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/dados/usuarios` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/dados/professores` | `GET` (professores são mantidos pelo cadastro de usuário do tipo `Professor`) |
+| `/api/dados/cursos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/dados/eventos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
 
 Exemplo de criação de evento:
 
@@ -88,13 +90,16 @@ mvn test
 mvn package
 ```
 
-Os testes usam H2 isolado e cobrem renderização das páginas públicas, acesso anônimo à API, nomes dos tipos e a ausência de JavaScript nos templates. O workflow `.github/workflows/ci.yml` executa `mvn verify` com Java 17.
+Os testes usam H2 isolado e cobrem renderização das páginas públicas, acesso anônimo à API, nomes dos tipos e a ausência de JavaScript nos templates. O workflow `.github/workflows/ci.yml` executa `mvn verify` com Java 25 LTS.
+
+O roteiro com **oito processos da API para demonstração**, exemplos de requisição e a divisão sugerida dos cinco slides do PDF está em [`docs/apresentacao-api.md`](docs/apresentacao-api.md). O PDF é um guia de gestão de equipe, não uma especificação de oito processos do sistema; os oito fluxos foram organizados para apresentar os cadastros e relacionamentos implementados.
 
 ## Organização do projeto
 
 - `src/main/java`: domínio, persistência, serviços, segurança, MVC e API.
 - `src/main/resources/templates`: páginas Thymeleaf.
 - `src/main/resources/static/css/app.css`: estilos da aplicação.
+- `docs/apresentacao-api.md`: roteiro da demonstração da API e conexão com o relatório de gestão.
 - `sql/schema.sql`: schema SQL Server para instalação nova.
 - `sql/migration-original-model-to-unicode.sql`: atualização preservando dados do DDL original.
 - `compose.yaml` e `Dockerfile`: execução local containerizada.

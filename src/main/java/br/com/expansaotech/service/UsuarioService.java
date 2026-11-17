@@ -73,6 +73,10 @@ public class UsuarioService {
         if (cursoRepository.existsByProfessor_Id(id)) {
             throw new IllegalArgumentException("Não é possível excluir um professor vinculado a cursos.");
         }
+        if (professorRepository.existsById(id)) {
+            professorRepository.deleteById(id);
+            professorRepository.flush();
+        }
         usuarioRepository.delete(usuario);
     }
 

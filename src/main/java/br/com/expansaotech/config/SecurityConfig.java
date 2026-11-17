@@ -18,11 +18,14 @@ public class SecurityConfig {
     @Order(1)
     SecurityFilterChain apiSecurity(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("/api/**")
+                .securityMatcher("/api", "/api/**")
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api/cursos", "/api/eventos").permitAll()
+                        .requestMatchers(HttpMethod.GET,
+                                "/api", "/api/dados", "/api/cursos", "/api/eventos",
+                                "/api/dados/cursos", "/api/dados/eventos")
+                        .permitAll()
                         .anyRequest().hasRole("ADMIN"))
                 .httpBasic(Customizer.withDefaults())
                 .headers(headers -> headers
@@ -37,6 +40,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/cursos", "/eventos", "/login", "/css/**", "/img/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
