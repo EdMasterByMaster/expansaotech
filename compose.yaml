@@ -42,6 +42,14 @@ services:
       APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:-}
       APP_ADMIN_CPF: ${APP_ADMIN_CPF:-}
       APP_ADMIN_NAME: ${APP_ADMIN_NAME:-Administração Expansão}
+      MAIL_HOST: ${MAIL_HOST:-localhost}
+      MAIL_PORT: ${MAIL_PORT:-1025}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-noreply@localhost}
+      MAIL_AUTH: ${MAIL_AUTH:-false}
+      MAIL_STARTTLS_ENABLED: ${MAIL_STARTTLS_ENABLED:-false}
+      APP_PUBLIC_BASE_URL: ${APP_PUBLIC_BASE_URL:-http://localhost:8080}
     ports:
       - "8080:8080"
     restart: unless-stopped

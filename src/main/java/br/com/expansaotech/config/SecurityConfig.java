@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 
 @Configuration
 public class SecurityConfig {
@@ -39,7 +40,11 @@ public class SecurityConfig {
     SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/cursos", "/eventos", "/login", "/css/**", "/img/**").permitAll()
+                        .requestMatchers(
+                                "/", "/cursos", "/eventos", "/login",
+                                "/esqueci-senha", "/redefinir-senha",
+                                "/css/**", "/img/**")
+                        .permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
@@ -49,6 +54,8 @@ public class SecurityConfig {
                         .permitAll())
                 .logout(logout -> logout.logoutSuccessUrl("/"))
                 .headers(headers -> headers
+                        .referrerPolicy(referrer -> referrer.policy(
+                                ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER))
                         .contentSecurityPolicy(csp -> csp.policyDirectives(
                                 "default-src 'self'; img-src 'self' https: data:; style-src 'self'; "
                                         + "form-action 'self'; frame-ancestors 'none'; base-uri 'self'"))
