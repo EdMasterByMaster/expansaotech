@@ -84,6 +84,25 @@ Os IDs dos exemplos são ilustrativos: use os valores retornados pelos cadastros
 - **SQL Server**: armazena os registros e mantém as relações ONG → cursos/eventos e usuário → professor → cursos.
 - **Swagger UI**: `/swagger-ui/index.html`; a especificação OpenAPI em JSON fica em `/v3/api-docs`. O esquema HTTP Basic documenta quais operações exigem administrador.
 
+## Nova fase: entrega de Gestão de Equipes
+
+Esta fase transforma o relatório em entregáveis verificáveis para a apresentação. O PDF organiza cinco slides; não informa a distribuição nominal completa nem as competências individuais. Portanto, os campos marcados para validação da equipe devem ser preenchidos com dados reais, sem atribuir pessoas ou habilidades por suposição.
+
+| Slide | Entrega da fase | Evidência / critério de conclusão |
+|---|---|---|
+| 1. Contexto do MVP | Apresentar problema, público atendido, objetivo e limites do MVP da ONG. | Escopo consistente com o portal, API e cadastros efetivamente implementados. |
+| 2. Governança Scrum/Kanban | Mostrar fluxo de trabalho, acompanhamento e responsabilidades de Ednilson (Scrum Master/Tech Lead) e Natalia (PMO), conforme o relatório. | Papéis descritos sem confundir governança da equipe com funcionalidades do sistema. |
+| 3. Papéis e corresponsabilidade | Completar a matriz para banco de dados, front-end, back-end e documentação. | Equipe confirma responsáveis e corresponsáveis; nomes não especificados no relatório ficam pendentes até validação. |
+| 4. Hard skills e soft skills | Registrar competências técnicas e interpessoais relevantes para cada integrante. | Cada competência é confirmada pela própria equipe; o relatório não fornece uma matriz individual pronta. |
+| 5. Desafios e soluções | Relacionar requisitos, carga de trabalho e qualidade às medidas adotadas no projeto. | Demonstrar evidências do repositório, testes e revisão; usar os oito processos da API como apoio prático, não como conteúdo atribuído ao PDF. |
+
+### Critérios para fechar a fase
+
+- Revisar os cinco slides com a equipe e validar nomes, papéis e competências antes da apresentação.
+- Manter a matriz de papéis e a matriz de competências coerentes com as responsabilidades reais.
+- Preparar uma demonstração repetível dos oito processos da seção anterior usando dados de teste e credenciais locais, sem expor senhas.
+- Relacionar cada desafio apresentado a uma solução e a uma evidência verificável (código, teste, documentação ou fluxo demonstrado).
+
 ## Conexão com a apresentação de Gestão de Equipes
 
 O PDF propõe cinco slides, não oito: (1) capa e contexto do MVP; (2) governança Scrum/Kanban, com Ednilson como Scrum Master/Tech Lead e Natalia como PMO; (3) matriz de papéis e corresponsabilidade nas frentes de banco de dados, front-end, back-end e documentação; (4) habilidades hard e soft; (5) desafios de requisitos, carga de trabalho e qualidade, com suas soluções.
