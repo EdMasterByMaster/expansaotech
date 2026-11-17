@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Evento | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page narrow">
+    <p class="eyebrow">Agenda</p><h1 th:text="${id != null ? 'Editar evento' : 'Novo evento'}">Evento</h1>
+    <form class="form-card" th:object="${form}"
+          th:action="${id != null ? '/admin/eventos/' + id : '/admin/eventos'}" method="post">
+        <label for="titulo">Título</label><input id="titulo" th:field="*{titulo}" required maxlength="150">
+        <small class="field-error" th:errors="*{titulo}"></small>
+        <label for="ongId">ONG responsável</label><select id="ongId" th:field="*{ongId}" required>
+            <option value="">Selecione</option><option th:each="ong : ${ongs}" th:value="${ong.id}" th:text="${ong.nome}"></option>
+        </select>
+        <small class="field-error" th:errors="*{ongId}"></small>
+        <label for="dataHora">Data e hora</label><input id="dataHora" th:field="*{dataHora}" type="datetime-local" required>
+        <small class="field-error" th:errors="*{dataHora}"></small>
+        <label for="localEvento">Local</label><input id="localEvento" th:field="*{localEvento}" required maxlength="255">
+        <small class="field-error" th:errors="*{localEvento}"></small>
+        <label for="descricao">Descrição</label><textarea id="descricao" th:field="*{descricao}" rows="5"></textarea>
+        <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/eventos}">Cancelar</a></div>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

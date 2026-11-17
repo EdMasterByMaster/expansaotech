@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Cursos e atividades oferecidos pela Associação Expansão Cultural.">
+    <title>Cursos | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section page-content">
+    <div class="section-heading">
+        <p class="eyebrow">Aprendizagem e convivência</p>
+        <h1>Nossos cursos</h1>
+        <p>Atividades para desenvolver talentos, fortalecer vínculos e abrir caminhos.</p>
+    </div>
+    <div class="card-grid">
+        <article class="content-card" th:each="curso : ${cursos}">
+            <img th:src="${curso.fotoUrl != null and !#strings.isEmpty(curso.fotoUrl) ? curso.fotoUrl : '/img/curso_ti.webp'}"
+                 th:alt="|Imagem do curso ${curso.titulo}|">
+            <div class="card-body">
+                <h2 th:text="${curso.titulo}">Curso</h2>
+                <p th:text="${curso.descricao}">Descrição do curso.</p>
+                <p class="meta" th:text="|${curso.horario} · ${curso.localCurso}|">Horário · Local</p>
+                <p class="meta" th:text="|Professor(a): ${curso.professor.usuario.nome}|">Professor(a)</p>
+            </div>
+        </article>
+    </div>
+    <p th:if="${#lists.isEmpty(cursos)}" class="empty-state">Novos cursos serão divulgados em breve.</p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

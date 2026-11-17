@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="login-page">
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="login-card">
+    <p class="eyebrow">Área administrativa</p>
+    <h1>Entrar</h1>
+    <p>Use seu e-mail e senha cadastrados pela administração.</p>
+    <p th:if="${param.error}" class="alert alert-error" role="alert">E-mail ou senha inválidos.</p>
+    <p th:if="${param.logout}" class="alert alert-success">Você saiu da sua conta.</p>
+    <form th:action="@{/login}" method="post">
+        <label for="username">E-mail</label>
+        <input id="username" name="username" type="email" autocomplete="username" required>
+        <label for="password">Senha</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="button button-primary" type="submit">Acessar</button>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

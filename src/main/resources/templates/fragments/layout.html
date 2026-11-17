@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header class="site-header" th:fragment="header">
+    <a class="brand" th:href="@{/}" aria-label="Expansão Tech - página inicial">
+        <img th:src="@{/img/logo_exp_top.png}" alt="Expansão Tech">
+    </a>
+    <nav aria-label="Navegação principal">
+        <a th:href="@{/}">Início</a>
+        <a th:href="@{/cursos}">Cursos</a>
+        <a th:href="@{/eventos}">Eventos</a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">Administração</a>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Entrar</a>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" class="logout-form">
+            <button type="submit">Sair</button>
+        </form>
+    </nav>
+</header>
+
+<footer class="site-footer" th:fragment="footer">
+    <p>Expansão Tech · Associação Expansão Cultural</p>
+    <p>Promovendo inclusão, dignidade e oportunidades na comunidade.</p>
+</footer>
+</body>
+</html>

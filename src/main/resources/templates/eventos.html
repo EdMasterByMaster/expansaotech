@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Agenda de eventos comunitários da Associação Expansão Cultural.">
+    <title>Eventos | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section page-content">
+    <div class="section-heading">
+        <p class="eyebrow">Agenda comunitária</p>
+        <h1>Eventos</h1>
+        <p>Encontros, atividades e momentos para estarmos juntos.</p>
+    </div>
+    <div class="card-grid">
+        <article class="content-card" th:each="evento : ${eventos}">
+            <img th:src="${evento.fotoUrl != null and !#strings.isEmpty(evento.fotoUrl) ? evento.fotoUrl : '/img/principal1.png'}"
+                 th:alt="|Imagem do evento ${evento.titulo}|">
+            <div class="card-body">
+                <p class="eyebrow" th:text="${#temporals.format(evento.dataHora, 'dd/MM/yyyy HH:mm')}">Data</p>
+                <h2 th:text="${evento.titulo}">Evento</h2>
+                <p th:text="${evento.descricao}">Descrição do evento.</p>
+                <p class="meta" th:text="${evento.localEvento}">Local</p>
+            </div>
+        </article>
+    </div>
+    <p th:if="${#lists.isEmpty(eventos)}" class="empty-state">Ainda não há eventos publicados.</p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

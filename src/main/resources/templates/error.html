@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${'Erro ' + codigo + ' | Expansão Tech'}">Erro | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section page-content">
+    <section class="login-card">
+        <p class="eyebrow" th:text="|Erro ${codigo}|">Erro</p>
+        <h1>Não foi possível concluir</h1>
+        <p th:text="${mensagem}">Ocorreu um erro.</p>
+        <a class="button button-primary" th:href="@{/}">Voltar ao início</a>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

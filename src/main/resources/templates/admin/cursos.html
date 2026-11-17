@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cursos | Administração</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page">
+    <div class="section-heading section-heading-row">
+        <div><p class="eyebrow">Programação</p><h1>Cursos</h1></div>
+        <a class="button button-primary" th:href="@{/admin/cursos/novo}">Novo curso</a>
+    </div>
+    <p th:if="${sucesso}" class="alert alert-success" th:text="${sucesso}" role="status"></p>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>Curso</th><th>ONG</th><th>Professor(a)</th><th>Horário</th><th>Ações</th></tr></thead>
+            <tbody>
+            <tr th:each="curso : ${cursos}">
+                <td th:text="${curso.titulo}"></td><td th:text="${curso.ong.nome}"></td>
+                <td th:text="${curso.professor.usuario.nome}"></td><td th:text="${curso.horario}"></td>
+                <td class="table-actions">
+                    <a class="text-link" th:href="@{/admin/cursos/{id}/editar(id=${curso.id})}">Editar</a>
+                    <form th:action="@{/admin/cursos/{id}/excluir(id=${curso.id})}" method="post">
+                        <button class="text-button danger" type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p th:if="${#lists.isEmpty(cursos)}" class="empty-state">Nenhum curso cadastrado.</p>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

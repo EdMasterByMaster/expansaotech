@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Conheça os projetos, cursos e eventos da Associação Expansão Cultural.">
+    <title>Expansão Tech | Inclusão e oportunidades</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main>
+    <section class="hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Associação Expansão Cultural</p>
+            <h1>Mais oportunidades, mais futuro.</h1>
+            <p>Promovendo inclusão e dignidade social por meio da educação, cultura, esporte e acolhimento.</p>
+            <a class="button button-light" th:href="@{/cursos}">Conheça nossos cursos</a>
+        </div>
+    </section>
+
+    <section class="section about">
+        <div class="section-heading">
+            <p class="eyebrow">Nossa missão</p>
+            <h2>Uma comunidade que cresce junto</h2>
+        </div>
+        <div th:if="${!#lists.isEmpty(ongs)}" th:each="ong : ${ongs}" class="about-card">
+            <h3 th:text="${ong.nome}">Associação Expansão Cultural</h3>
+            <p>Atuamos para ampliar o acesso a oportunidades, cultura, esporte, educação e cuidado integral na comunidade.</p>
+            <a class="text-link" th:href="|mailto:${ong.email}|" th:text="${ong.email}">contato@expansao.org</a>
+        </div>
+        <p th:if="${#lists.isEmpty(ongs)}" class="empty-state">As informações institucionais serão publicadas em breve.</p>
+    </section>
+
+    <section class="section section-muted">
+        <div class="section-heading">
+            <p class="eyebrow">Aprender e participar</p>
+            <h2>Cursos e atividades</h2>
+            <a class="text-link" th:href="@{/cursos}">Ver todos os cursos</a>
+        </div>
+        <div class="card-grid">
+            <article class="content-card" th:each="curso : ${cursos}">
+                <img th:src="${curso.fotoUrl != null and !#strings.isEmpty(curso.fotoUrl) ? curso.fotoUrl : '/img/curso_ti.webp'}"
+                     th:alt="|Imagem do curso ${curso.titulo}|">
+                <div class="card-body">
+                    <h3 th:text="${curso.titulo}">Curso</h3>
+                    <p th:text="${curso.descricao}">Conheça a atividade.</p>
+                    <p class="meta" th:text="|${curso.horario} · ${curso.localCurso}|">Horário · Local</p>
+                </div>
+            </article>
+        </div>
+        <p th:if="${#lists.isEmpty(cursos)}" class="empty-state">Novos cursos serão divulgados em breve.</p>
+    </section>
+
+    <section class="section">
+        <div class="section-heading">
+            <p class="eyebrow">Agenda comunitária</p>
+            <h2>Próximos eventos</h2>
+            <a class="text-link" th:href="@{/eventos}">Ver todos os eventos</a>
+        </div>
+        <div class="card-grid">
+            <article class="content-card event-card" th:each="evento : ${eventos}">
+                <img th:src="${evento.fotoUrl != null and !#strings.isEmpty(evento.fotoUrl) ? evento.fotoUrl : '/img/principal1.png'}"
+                     th:alt="|Imagem do evento ${evento.titulo}|">
+                <div class="card-body">
+                    <p class="eyebrow" th:text="${#temporals.format(evento.dataHora, 'dd/MM/yyyy HH:mm')}">Data</p>
+                    <h3 th:text="${evento.titulo}">Evento</h3>
+                    <p th:text="${evento.descricao}">Detalhes do evento.</p>
+                    <p class="meta" th:text="${evento.localEvento}">Local</p>
+                </div>
+            </article>
+        </div>
+        <p th:if="${#lists.isEmpty(eventos)}" class="empty-state">Ainda não há eventos publicados.</p>
+    </section>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo + ' | Expansão Tech'}">ONG | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page narrow">
+    <p class="eyebrow">Cadastro institucional</p><h1 th:text="${titulo}">ONG</h1>
+    <form class="form-card" th:object="${form}"
+          th:action="${id != null ? '/admin/ongs/' + id : '/admin/ongs'}" method="post">
+        <label for="nome">Nome</label><input id="nome" th:field="*{nome}" required maxlength="150">
+        <small class="field-error" th:errors="*{nome}"></small>
+        <label for="cnpj">CNPJ</label><input id="cnpj" th:field="*{cnpj}" required maxlength="18">
+        <small class="field-error" th:errors="*{cnpj}"></small>
+        <label for="email">E-mail</label><input id="email" th:field="*{email}" type="email" required maxlength="100">
+        <small class="field-error" th:errors="*{email}"></small>
+        <label for="telefone">Telefone</label><input id="telefone" th:field="*{telefone}" maxlength="20">
+        <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/ongs}">Cancelar</a></div>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

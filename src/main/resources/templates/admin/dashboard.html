@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Painel | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section admin-page">
+    <div class="section-heading">
+        <p class="eyebrow">Gestão</p>
+        <h1>Painel administrativo</h1>
+        <p>Gerencie as informações publicadas no portal.</p>
+    </div>
+    <div class="stats-grid">
+        <a class="stat-card" th:href="@{/admin/ongs}"><strong th:text="${totalOngs}">0</strong><span>ONGs</span></a>
+        <a class="stat-card" th:href="@{/admin/usuarios}"><strong th:text="${totalUsuarios}">0</strong><span>Usuários</span></a>
+        <a class="stat-card" th:href="@{/admin/cursos}"><strong th:text="${totalCursos}">0</strong><span>Cursos</span></a>
+        <a class="stat-card" th:href="@{/admin/eventos}"><strong th:text="${totalEventos}">0</strong><span>Eventos</span></a>
+    </div>
+    <div class="admin-links">
+        <a class="button button-primary" th:href="@{/admin/ongs}">Administrar ONGs</a>
+        <a class="button button-primary" th:href="@{/admin/usuarios}">Administrar usuários</a>
+        <a class="button button-primary" th:href="@{/admin/cursos}">Administrar cursos</a>
+        <a class="button button-primary" th:href="@{/admin/eventos}">Administrar eventos</a>
+    </div>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
