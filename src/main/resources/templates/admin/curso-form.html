@@ -22,12 +22,34 @@
             <option value="">Selecione</option><option th:each="professor : ${professores}" th:value="${professor.id}" th:text="|${professor.usuario.nome} · ${professor.especialidade}|"></option>
         </select>
         <small class="field-error" th:errors="*{professorId}"></small>
+        <label for="modalidade">Modalidade</label>
+        <select id="modalidade" th:field="*{modalidade}" required>
+            <option value="INFORMATICA">Curso de informática</option>
+            <option value="DANCA">Aula de dança</option>
+        </select>
         <label for="descricao">Descrição</label><textarea id="descricao" th:field="*{descricao}" rows="5"></textarea>
-        <label for="horario">Horário</label><input id="horario" th:field="*{horario}" required maxlength="100">
+        <label for="cargaHoraria">Carga horária (horas)</label><input id="cargaHoraria" th:field="*{cargaHoraria}" type="number" min="1" required>
+        <small class="field-error" th:errors="*{cargaHoraria}"></small>
+        <label for="vagas">Vagas / capacidade máxima</label><input id="vagas" th:field="*{vagas}" type="number" min="1" required>
+        <small class="field-error" th:errors="*{vagas}"></small>
+        <label for="faixaEtariaMin">Idade mínima (aulas de dança)</label><input id="faixaEtariaMin" th:field="*{faixaEtariaMin}" type="number" min="0">
+        <label for="faixaEtariaMax">Idade máxima (aulas de dança)</label><input id="faixaEtariaMax" th:field="*{faixaEtariaMax}" type="number" min="0">
+        <label for="dataInicio">Data de início</label><input id="dataInicio" th:field="*{dataInicio}" type="date" required>
+        <label for="dataTermino">Data de término</label><input id="dataTermino" th:field="*{dataTermino}" type="date" required>
+        <fieldset>
+            <legend>Dias de aula</legend>
+            <label th:each="dia : ${diasSemana}" class="checkbox-label">
+                <input type="checkbox" th:field="*{diasSemana}" th:value="${dia}" th:text="${dia}">
+            </label>
+        </fieldset>
+        <label for="horaInicio">Hora de início</label><input id="horaInicio" th:field="*{horaInicio}" type="time" required>
+        <label for="horaFim">Hora de término</label><input id="horaFim" th:field="*{horaFim}" type="time" required>
+        <label for="horario">Descrição do horário</label><input id="horario" th:field="*{horario}" required maxlength="100">
         <small class="field-error" th:errors="*{horario}"></small>
         <label for="localCurso">Local</label><input id="localCurso" th:field="*{localCurso}" required maxlength="255">
         <small class="field-error" th:errors="*{localCurso}"></small>
         <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <label class="checkbox-label"><input type="checkbox" th:field="*{publicado}"> Publicar turma no catálogo</label>
         <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/cursos}">Cancelar</a></div>
     </form>
 </main>

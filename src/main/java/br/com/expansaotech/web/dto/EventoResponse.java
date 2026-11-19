@@ -12,11 +12,16 @@ public record EventoResponse(
         LocalDateTime dataHora,
         String localEvento,
         String fotoUrl,
-        LocalDateTime dataCriacao) {
+        LocalDateTime dataCriacao,
+        LocalDateTime dataInicio,
+        LocalDateTime dataTermino,
+        int voluntariosNecessarios,
+        boolean publicado) {
 
     public static EventoResponse from(Evento evento) {
         return new EventoResponse(evento.getId(), evento.getOng().getId(), evento.getOng().getNome(),
                 evento.getTitulo(), evento.getDescricao(), evento.getDataHora(), evento.getLocalEvento(),
-                evento.getFotoUrl(), evento.getDataCriacao());
+                evento.getFotoUrl(), evento.getDataCriacao(), evento.getDataInicio(), evento.getDataTermino(),
+                evento.getVoluntariosNecessarios(), evento.isPublicado());
     }
 }

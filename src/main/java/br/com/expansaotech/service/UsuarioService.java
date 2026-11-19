@@ -85,6 +85,12 @@ public class UsuarioService {
         usuario.setNome(input.nome());
         usuario.setEmail(input.email());
         usuario.setTipo(input.tipo());
+        usuario.setCargo(input.cargo());
+        if (novo && input.tipo() == UsuarioTipo.COLABORADOR) {
+            usuario.setAtivo(false);
+            usuario.setEmailVerificado(false);
+            usuario.setPerfilCompleto(false);
+        }
         usuario.setFotoUrl(input.fotoUrl());
         if (input.senha() != null && !input.senha().isBlank()) {
             if (input.senha().length() < 12) {

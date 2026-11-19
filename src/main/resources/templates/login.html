@@ -12,7 +12,10 @@
     <p class="eyebrow">Área administrativa</p>
     <h1>Entrar</h1>
     <p>Use seu e-mail e senha cadastrados pela administração.</p>
+    <p th:if="${param.senhaRedefinida}" class="alert alert-success" role="status">Senha redefinida. Entre com sua nova senha.</p>
+    <p th:if="${param.locked}" class="alert alert-error" role="alert">Conta temporariamente bloqueada após várias tentativas. Tente novamente em 15 minutos.</p>
     <p th:if="${param.error}" class="alert alert-error" role="alert">E-mail ou senha inválidos.</p>
+    <p th:if="${ativacao}" class="alert alert-success" role="status" th:text="${ativacao}"></p>
     <p th:if="${param.logout}" class="alert alert-success">Você saiu da sua conta.</p>
     <form th:action="@{/login}" method="post">
         <label for="username">E-mail</label>
@@ -21,6 +24,8 @@
         <input id="password" name="password" type="password" autocomplete="current-password" required>
         <button class="button button-primary" type="submit">Acessar</button>
     </form>
+    <p><a class="text-link" th:href="@{/esqueci-senha}">Esqueci minha senha</a></p>
+    <p><a class="text-link" th:href="@{/cadastro}">Criar uma conta</a></p>
 </main>
 <div th:replace="~{fragments/layout :: footer}"></div>
 </body>

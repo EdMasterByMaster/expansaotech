@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Meu perfil | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section narrow">
+    <p class="eyebrow">Minha conta</p>
+    <h1>Complete seu perfil</h1>
+    <p>Precisamos destes dados para organizar sua participação nas atividades da ONG.</p>
+    <p th:if="${mensagem}" class="alert alert-success" role="status" th:text="${mensagem}"></p>
+    <p th:if="${erro}" class="alert alert-error" role="alert" th:text="${erro}"></p>
+    <form class="form-card" th:object="${form}" th:action="@{/perfil}" method="post">
+        <label for="cpf">CPF</label>
+        <input id="cpf" th:field="*{cpf}" inputmode="numeric" autocomplete="off" required maxlength="14">
+        <small class="field-error" th:errors="*{cpf}"></small>
+        <label for="cep">CEP</label>
+        <input id="cep" th:field="*{cep}" inputmode="numeric" autocomplete="postal-code" required maxlength="9">
+        <small class="field-error" th:errors="*{cep}"></small>
+        <button class="button button-secondary" type="submit" name="buscarCep" value="true">Buscar endereço pelo CEP</button>
+        <label for="logradouro">Endereço</label>
+        <input id="logradouro" th:field="*{logradouro}" autocomplete="street-address" required maxlength="200">
+        <small class="field-error" th:errors="*{logradouro}"></small>
+        <label for="numero">Número</label>
+        <input id="numero" th:field="*{numero}" required maxlength="20">
+        <small class="field-error" th:errors="*{numero}"></small>
+        <label for="complemento">Complemento</label>
+        <input id="complemento" th:field="*{complemento}" maxlength="100">
+        <label for="dataNascimento">Data de nascimento</label>
+        <input id="dataNascimento" th:field="*{dataNascimento}" type="date" required>
+        <small class="field-error" th:errors="*{dataNascimento}"></small>
+        <label for="telefone">Telefone</label>
+        <input id="telefone" th:field="*{telefone}" type="tel" autocomplete="tel" required maxlength="20">
+        <small class="field-error" th:errors="*{telefone}"></small>
+        <fieldset>
+            <legend>Áreas de interesse</legend>
+            <label><input type="checkbox" th:field="*{areasInteresse}" value="Educação"> Educação</label>
+            <label><input type="checkbox" th:field="*{areasInteresse}" value="Cultura"> Cultura</label>
+            <label><input type="checkbox" th:field="*{areasInteresse}" value="Esporte"> Esporte</label>
+            <label><input type="checkbox" th:field="*{areasInteresse}" value="Tecnologia"> Tecnologia</label>
+            <label><input type="checkbox" th:field="*{areasInteresse}" value="Assistência social"> Assistência social</label>
+        </fieldset>
+        <fieldset>
+            <legend>Dias disponíveis</legend>
+            <label th:each="dia : ${diasSemana}">
+                <input type="checkbox" th:field="*{diasDisponiveis}" th:value="${dia}" th:text="${dia}">
+            </label>
+        </fieldset>
+        <button class="button button-primary" type="submit">Salvar perfil</button>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

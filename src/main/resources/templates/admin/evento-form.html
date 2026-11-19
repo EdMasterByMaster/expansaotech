@@ -18,12 +18,16 @@
             <option value="">Selecione</option><option th:each="ong : ${ongs}" th:value="${ong.id}" th:text="${ong.nome}"></option>
         </select>
         <small class="field-error" th:errors="*{ongId}"></small>
-        <label for="dataHora">Data e hora</label><input id="dataHora" th:field="*{dataHora}" type="datetime-local" required>
+        <label for="dataHora">Início da ação</label><input id="dataHora" th:field="*{dataHora}" type="datetime-local" required>
         <small class="field-error" th:errors="*{dataHora}"></small>
+        <label for="dataTermino">Término da ação</label><input id="dataTermino" th:field="*{dataTermino}" type="datetime-local" required>
         <label for="localEvento">Local</label><input id="localEvento" th:field="*{localEvento}" required maxlength="255">
         <small class="field-error" th:errors="*{localEvento}"></small>
-        <label for="descricao">Descrição</label><textarea id="descricao" th:field="*{descricao}" rows="5"></textarea>
+        <label for="voluntariosNecessarios">Voluntários necessários</label>
+        <input id="voluntariosNecessarios" th:field="*{voluntariosNecessarios}" type="number" min="0" required>
+        <label for="descricao">Descrição / objetivo da ação</label><textarea id="descricao" th:field="*{descricao}" rows="5"></textarea>
         <label for="fotoUrl">URL da foto</label><input id="fotoUrl" th:field="*{fotoUrl}" type="url" maxlength="500">
+        <label class="checkbox-label"><input type="checkbox" th:field="*{publicado}"> Publicar evento para inscrições</label>
         <div class="form-actions"><button class="button button-primary" type="submit">Salvar</button><a class="button button-secondary" th:href="@{/admin/eventos}">Cancelar</a></div>
     </form>
 </main>

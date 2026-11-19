@@ -11,6 +11,12 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
     List<Evento> findAllByOrderByDataHoraAsc();
 
     @EntityGraph(attributePaths = "ong")
+    List<Evento> findAllByPublicadoTrueOrderByDataHoraAsc();
+
+    @EntityGraph(attributePaths = "ong")
+    Optional<Evento> findByIdAndPublicadoTrue(Integer id);
+
+    @EntityGraph(attributePaths = "ong")
     @Override
     Optional<Evento> findById(Integer id);
 }

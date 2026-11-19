@@ -15,15 +15,25 @@
         <h1>Eventos</h1>
         <p>Encontros, atividades e momentos para estarmos juntos.</p>
     </div>
+    <p th:if="${mensagem}" class="alert alert-success" role="status" th:text="${mensagem}"></p>
+    <p th:if="${erro}" class="alert alert-error" role="alert" th:text="${erro}"></p>
     <div class="card-grid">
         <article class="content-card" th:each="evento : ${eventos}">
             <img th:src="${evento.fotoUrl != null and !#strings.isEmpty(evento.fotoUrl) ? evento.fotoUrl : '/img/principal1.png'}"
                  th:alt="|Imagem do evento ${evento.titulo}|">
             <div class="card-body">
-                <p class="eyebrow" th:text="${#temporals.format(evento.dataHora, 'dd/MM/yyyy HH:mm')}">Data</p>
+                <p class="eyebrow" th:text="${#temporals.format(evento.dataInicio, 'dd/MM/yyyy HH:mm')}">Data</p>
                 <h2 th:text="${evento.titulo}">Evento</h2>
                 <p th:text="${evento.descricao}">Descrição do evento.</p>
                 <p class="meta" th:text="${evento.localEvento}">Local</p>
+                <p class="meta" th:if="${evento.voluntariosNecessarios > 0}"
+                   th:text="|Vagas para voluntários: ${evento.voluntariosNecessarios}|">Vagas</p>
+                <form th:if="${evento.voluntariosNecessarios > 0 and #authorization.expression('isAuthenticated()')}"
+                      th:action="@{/eventos/{id}/inscricao(id=${evento.id})}" method="post">
+                    <button class="button button-primary" type="submit">Quero ser voluntário</button>
+                </form>
+                <a th:if="${evento.voluntariosNecessarios > 0 and !#authorization.expression('isAuthenticated()')}"
+                   class="button button-secondary" th:href="@{/login}">Entre para participar</a>
             </div>
         </article>
     </div>

@@ -1,6 +1,7 @@
 package br.com.expansaotech.web;
 
 import br.com.expansaotech.domain.Curso;
+import br.com.expansaotech.domain.CursoModalidade;
 import br.com.expansaotech.domain.Evento;
 import br.com.expansaotech.domain.Ong;
 import br.com.expansaotech.domain.Professor;
@@ -8,6 +9,7 @@ import br.com.expansaotech.domain.Usuario;
 import br.com.expansaotech.domain.UsuarioTipo;
 import br.com.expansaotech.repository.ProfessorRepository;
 import br.com.expansaotech.service.CursoService;
+import br.com.expansaotech.service.AccountRegistrationService;
 import br.com.expansaotech.service.EventoService;
 import br.com.expansaotech.service.OngService;
 import br.com.expansaotech.service.UsuarioService;
@@ -35,18 +37,21 @@ public class AdminController {
     private final CursoService cursoService;
     private final EventoService eventoService;
     private final ProfessorRepository professorRepository;
+    private final AccountRegistrationService accountRegistrationService;
 
     public AdminController(
             OngService ongService,
             UsuarioService usuarioService,
             CursoService cursoService,
             EventoService eventoService,
-            ProfessorRepository professorRepository) {
+            ProfessorRepository professorRepository,
+            AccountRegistrationService accountRegistrationService) {
         this.ongService = ongService;
         this.usuarioService = usuarioService;
         this.cursoService = cursoService;
         this.eventoService = eventoService;
         this.professorRepository = professorRepository;
+        this.accountRegistrationService = accountRegistrationService;
     }
 
     @GetMapping
@@ -75,7 +80,9 @@ public class AdminController {
     public String editarOng(@PathVariable Integer id, Model model) {
         Ong ong = ongService.buscar(id);
         model.addAttribute("form", new OngInput(
-                ong.getCnpj(), ong.getNome(), ong.getEmail(), ong.getTelefone(), ong.getFotoUrl()));
+                ong.getCnpj(), ong.getNome(), ong.getEmail(), ong.getTelefone(), ong.getFotoUrl(),
+                ong.getRazaoSocial(), ong.getNomeFantasia(), ong.getCep(), ong.getLogradouro(),
+                ong.getNumero(), ong.getComplemento()));
         model.addAttribute("id", id);
         model.addAttribute("titulo", "Editar ONG");
         return "admin/ong-form";
@@ -139,7 +146,7 @@ public class AdminController {
         String especialidade = professorRepository.findById(id).map(Professor::getEspecialidade).orElse("");
         prepararFormularioUsuario(model, new UsuarioInput(
                 usuario.getCpf(), usuario.getNome(), usuario.getEmail(), "", usuario.getTipo(),
-                usuario.getFotoUrl(), especialidade));
+                usuario.getFotoUrl(), especialidade, usuario.getCargo()));
         model.addAttribute("id", id);
         return "admin/usuario-form";
     }
@@ -160,8 +167,25 @@ public class AdminController {
             model.addAttribute("tipos", UsuarioTipo.values());
             return "admin/usuario-form";
         }
-        usuarioService.criar(form);
-        redirect.addFlashAttribute("sucesso", "Usuário cadastrado.");
+        Usuario usuario = usuarioService.criar(form);
+        if (usuario.getTipo() == UsuarioTipo.COLABORADOR) {
+            try {
+                accountRegistrationService.convidarColaborador(usuario.getId());
+                redirect.addFlashAttribute("sucesso", "Colaborador cadastrado. O convite de ativação foi enviado.");
+            } catch (IllegalStateException exception) {
+                redirect.addFlashAttribute("sucesso",
+                        "Colaborador cadastrado sem ativação. Verifique o SMTP e reenvie o convite.");
+            }
+        } else {
+            redirect.addFlashAttribute("sucesso", "Usuário cadastrado.");
+        }
+        return "redirect:/admin/usuarios";
+    }
+
+    @PostMapping("/usuarios/{id}/convite")
+    public String reenviarConvite(@PathVariable Integer id, RedirectAttributes redirect) {
+        accountRegistrationService.convidarColaborador(id);
+        redirect.addFlashAttribute("sucesso", "Convite de ativação enviado.");
         return "redirect:/admin/usuarios";
     }
 
@@ -203,7 +227,9 @@ public class AdminController {
 
     @GetMapping("/cursos/novo")
     public String novoCurso(Model model) {
-        prepararFormularioCurso(model, new CursoInput(null, null, "", "", "", "", ""));
+        prepararFormularioCurso(model, new CursoInput(null, null, "", "", "", "", "",
+                CursoModalidade.INFORMATICA, null, null, null, null, null, null, null, null,
+                java.util.Set.of(), true));
         return "admin/curso-form";
     }
 
@@ -211,7 +237,10 @@ public class AdminController {
     public String editarCurso(@PathVariable Integer id, Model model) {
         Curso curso = cursoService.buscar(id);
         prepararFormularioCurso(model, new CursoInput(curso.getOng().getId(), curso.getProfessor().getId(),
-                curso.getTitulo(), curso.getDescricao(), curso.getHorario(), curso.getLocalCurso(), curso.getFotoUrl()));
+                curso.getTitulo(), curso.getDescricao(), curso.getHorario(), curso.getLocalCurso(), curso.getFotoUrl(),
+                curso.getModalidade(), curso.getCargaHoraria(), curso.getVagas(), curso.getFaixaEtariaMin(),
+                curso.getFaixaEtariaMax(), curso.getDataInicio(), curso.getDataTermino(), curso.getHoraInicio(),
+                curso.getHoraFim(), curso.getDiasSemana(), curso.isPublicado()));
         model.addAttribute("id", id);
         return "admin/curso-form";
     }
@@ -263,7 +292,7 @@ public class AdminController {
 
     @GetMapping("/eventos/novo")
     public String novoEvento(Model model) {
-        prepararFormularioEvento(model, new EventoInput(null, "", "", null, "", ""));
+        prepararFormularioEvento(model, new EventoInput(null, "", "", null, "", "", null, 0, true));
         return "admin/evento-form";
     }
 
@@ -271,7 +300,8 @@ public class AdminController {
     public String editarEvento(@PathVariable Integer id, Model model) {
         Evento evento = eventoService.buscar(id);
         prepararFormularioEvento(model, new EventoInput(evento.getOng().getId(), evento.getTitulo(),
-                evento.getDescricao(), evento.getDataHora(), evento.getLocalEvento(), evento.getFotoUrl()));
+                evento.getDescricao(), evento.getDataInicio(), evento.getLocalEvento(), evento.getFotoUrl(),
+                evento.getDataTermino(), evento.getVoluntariosNecessarios(), evento.isPublicado()));
         model.addAttribute("id", id);
         return "admin/evento-form";
     }
@@ -324,6 +354,7 @@ public class AdminController {
         model.addAttribute("form", form);
         model.addAttribute("ongs", ongService.listar());
         model.addAttribute("professores", professorRepository.findAll());
+        model.addAttribute("diasSemana", java.time.DayOfWeek.values());
     }
 
     private void prepararFormularioEvento(Model model, EventoInput form) {
