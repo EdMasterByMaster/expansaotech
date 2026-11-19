@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Criar conta | Expansão Tech</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div th:replace="~{fragments/layout :: header}"></div>
+<main class="section narrow">
+    <p class="eyebrow">Junte-se à Expansão</p>
+    <h1>Criar conta</h1>
+    <p th:if="${mensagem}" class="alert alert-success" role="status" th:text="${mensagem}"></p>
+    <p th:if="${erro}" class="alert alert-error" role="alert" th:text="${erro}"></p>
+    <form class="form-card" th:object="${form}" th:action="@{/cadastro}" method="post">
+        <label for="nome">Nome completo</label>
+        <input id="nome" th:field="*{nome}" autocomplete="name" required maxlength="150">
+        <small class="field-error" th:errors="*{nome}"></small>
+        <label for="email">E-mail</label>
+        <input id="email" th:field="*{email}" type="email" autocomplete="email" required maxlength="100">
+        <small class="field-error" th:errors="*{email}"></small>
+        <label for="tipo">Quero participar como</label>
+        <select id="tipo" th:field="*{tipo}" required>
+            <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo.valorBanco}"></option>
+        </select>
+        <small class="field-error" th:errors="*{tipo}"></small>
+        <label for="senha">Senha (mínimo 12 caracteres)</label>
+        <input id="senha" th:field="*{senha}" type="password" autocomplete="new-password" required minlength="12" maxlength="72">
+        <small class="field-error" th:errors="*{senha}"></small>
+        <label for="confirmarSenha">Confirme a senha</label>
+        <input id="confirmarSenha" th:field="*{confirmarSenha}" type="password" autocomplete="new-password" required minlength="12" maxlength="72">
+        <small class="field-error" th:errors="*{confirmarSenha}"></small>
+        <button class="button button-primary" type="submit">Cadastrar</button>
+    </form>
+</main>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -50,6 +50,13 @@ class ApiSecurityTest {
         mockMvc.perform(get("/api/dados/usuarios")).andExpect(status().isUnauthorized());
         mockMvc.perform(post("/api/eventos").contentType("application/json").content("{}"))
                 .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/api/contas").contentType(MediaType.APPLICATION_JSON).content("{}"))
+                .andExpect(status().isBadRequest());
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put(
+                        "/api/contas/perfil")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -57,6 +64,9 @@ class ApiSecurityTest {
         mockMvc.perform(get("/")).andExpect(status().isOk());
         mockMvc.perform(get("/cursos")).andExpect(status().isOk());
         mockMvc.perform(get("/eventos")).andExpect(status().isOk());
+        mockMvc.perform(get("/cadastro"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Criar conta")));
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"_csrf\"")));
@@ -68,7 +78,7 @@ class ApiSecurityTest {
         String ong = mockMvc.perform(post("/api/dados/ongs")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
-                                {"cnpj":"12.345.678/0001-90","nome":"ONG São Luís","email":"contato@ong.org"}
+                                {"cnpj":"11.222.333/0001-81","nome":"ONG São Luís","email":"contato@ong.org"}
                                 """))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", org.hamcrest.Matchers.containsString("/api/dados/ongs/")))

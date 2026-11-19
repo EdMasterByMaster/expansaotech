@@ -11,10 +11,12 @@ public record UsuarioResponse(
         String email,
         UsuarioTipo tipo,
         String fotoUrl,
+        String cargo,
         LocalDateTime dataCadastro) {
 
     public static UsuarioResponse from(Usuario usuario) {
         return new UsuarioResponse(usuario.getId(), usuario.getCpf(), usuario.getNome(),
-                usuario.getEmail(), usuario.getTipo(), usuario.getFotoUrl(), usuario.getDataCadastro());
+                usuario.getEmail(), usuario.getTipo(), usuario.getFotoUrl(), usuario.getCargo(),
+                usuario.getDataCadastro());
     }
 }

@@ -13,5 +13,17 @@ public record UsuarioInput(
         @Size(max = 255) String senha,
         @NotNull UsuarioTipo tipo,
         @Size(max = 500) String fotoUrl,
-        @Size(max = 255) String especialidade) {
+        @Size(max = 255) String especialidade,
+        @Size(max = 100) String cargo) {
+
+    public UsuarioInput(
+            String cpf,
+            String nome,
+            String email,
+            String senha,
+            UsuarioTipo tipo,
+            String fotoUrl,
+            String especialidade) {
+        this(cpf, nome, email, senha, tipo, fotoUrl, especialidade, null);
+    }
 }

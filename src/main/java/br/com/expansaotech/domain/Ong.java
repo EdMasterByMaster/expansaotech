@@ -33,6 +33,16 @@ public class Ong {
     @Column(nullable = false, length = 150)
     private String nome;
 
+    @Size(max = 200)
+    @Nationalized
+    @Column(name = "razao_social", length = 200)
+    private String razaoSocial;
+
+    @Size(max = 150)
+    @Nationalized
+    @Column(name = "nome_fantasia", length = 150)
+    private String nomeFantasia;
+
     @NotBlank
     @Email
     @Size(max = 100)
@@ -42,6 +52,24 @@ public class Ong {
     @Size(max = 20)
     @Column(length = 20)
     private String telefone;
+
+    @Size(max = 9)
+    @Column(length = 9)
+    private String cep;
+
+    @Size(max = 200)
+    @Nationalized
+    @Column(length = 200)
+    private String logradouro;
+
+    @Size(max = 20)
+    @Column(length = 20)
+    private String numero;
+
+    @Size(max = 100)
+    @Nationalized
+    @Column(length = 100)
+    private String complemento;
 
     @Size(max = 500)
     @Column(name = "foto_url", length = 500)
@@ -71,6 +99,22 @@ public class Ong {
         this.nome = nome == null ? null : nome.trim();
     }
 
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial == null ? null : razaoSocial.trim();
+    }
+
+    public String getNomeFantasia() {
+        return nomeFantasia;
+    }
+
+    public void setNomeFantasia(String nomeFantasia) {
+        this.nomeFantasia = nomeFantasia == null ? null : nomeFantasia.trim();
+    }
+
     public String getEmail() {
         return email;
     }
@@ -85,6 +129,38 @@ public class Ong {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone == null ? null : telefone.trim();
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep == null ? null : cep.trim();
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro == null ? null : logradouro.trim();
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero == null ? null : numero.trim();
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento == null ? null : complemento.trim();
     }
 
     public String getFotoUrl() {

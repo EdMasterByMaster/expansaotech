@@ -5,6 +5,9 @@ import br.com.expansaotech.service.CursoService;
 import br.com.expansaotech.service.EventoService;
 import br.com.expansaotech.service.OngService;
 import br.com.expansaotech.service.UsuarioService;
+import br.com.expansaotech.service.ParticipacaoService;
+import br.com.expansaotech.service.AccountRegistrationService;
+import br.com.expansaotech.domain.Usuario;
 import br.com.expansaotech.repository.ProfessorRepository;
 import br.com.expansaotech.web.dto.CursoInput;
 import br.com.expansaotech.web.dto.CursoResponse;
@@ -15,6 +18,8 @@ import br.com.expansaotech.web.dto.OngResponse;
 import br.com.expansaotech.web.dto.ProfessorResponse;
 import br.com.expansaotech.web.dto.UsuarioInput;
 import br.com.expansaotech.web.dto.UsuarioResponse;
+import br.com.expansaotech.web.dto.RegistrationInput;
+import br.com.expansaotech.web.dto.PerfilInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,6 +29,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping({"/api/dados", "/api"})
@@ -43,24 +50,55 @@ public class ApiController {
     private final CursoService cursoService;
     private final EventoService eventoService;
     private final ProfessorRepository professorRepository;
+    private final ParticipacaoService participacaoService;
+    private final AccountRegistrationService accountRegistrationService;
 
     public ApiController(
             OngService ongService,
             UsuarioService usuarioService,
             CursoService cursoService,
             EventoService eventoService,
-            ProfessorRepository professorRepository) {
+            ProfessorRepository professorRepository,
+            ParticipacaoService participacaoService,
+            AccountRegistrationService accountRegistrationService) {
         this.ongService = ongService;
         this.usuarioService = usuarioService;
         this.cursoService = cursoService;
         this.eventoService = eventoService;
         this.professorRepository = professorRepository;
+        this.participacaoService = participacaoService;
+        this.accountRegistrationService = accountRegistrationService;
     }
 
     @GetMapping
     @Operation(summary = "Verificar status da API", description = "Confirma que a API está disponível e identifica o horário da verificação.")
     public ApiStatusResponse getStatus() {
         return new ApiStatusResponse("Rodando perfeitamente!", "Expansão Tech", OffsetDateTime.now(ZoneOffset.UTC));
+    }
+
+    @PostMapping("/contas")
+    @Operation(summary = "Solicitar cadastro de conta pública")
+    public ResponseEntity<Void> cadastrarConta(@Valid @RequestBody RegistrationInput input) {
+        accountRegistrationService.cadastrar(input);
+        return ResponseEntity.accepted().build();
+    }
+
+    @PostMapping("/contas/ativacao")
+    @Operation(summary = "Ativar conta pelo token enviado por e-mail")
+    public ResponseEntity<Void> ativarConta(@RequestParam String token) {
+        if (!accountRegistrationService.ativar(token)) {
+            throw new IllegalArgumentException("O token de ativação é inválido ou expirou.");
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/contas/perfil")
+    @Operation(summary = "Atualizar perfil do usuário autenticado")
+    public ResponseEntity<Void> atualizarPerfil(
+            @Valid @RequestBody PerfilInput input,
+            @AuthenticationPrincipal Usuario usuario) {
+        accountRegistrationService.completarPerfil(usuario.getId(), input);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/ongs")
@@ -136,13 +174,13 @@ public class ApiController {
     @GetMapping("/cursos")
     @Operation(summary = "Listar cursos publicados")
     public List<CursoResponse> listarCursos() {
-        return cursoService.listar().stream().map(CursoResponse::from).toList();
+        return cursoService.listarPublicados().stream().map(CursoResponse::from).toList();
     }
 
     @GetMapping("/cursos/{id}")
     @Operation(summary = "Consultar curso por ID")
     public CursoResponse buscarCurso(@PathVariable Integer id) {
-        return CursoResponse.from(cursoService.buscar(id));
+        return CursoResponse.from(cursoService.buscarPublicado(id));
     }
 
     @PostMapping("/cursos")
@@ -168,13 +206,13 @@ public class ApiController {
     @GetMapping("/eventos")
     @Operation(summary = "Listar eventos publicados")
     public List<EventoResponse> listarEventos() {
-        return eventoService.listar().stream().map(EventoResponse::from).toList();
+        return eventoService.listarPublicados().stream().map(EventoResponse::from).toList();
     }
 
     @GetMapping("/eventos/{id}")
     @Operation(summary = "Consultar evento por ID")
     public EventoResponse buscarEvento(@PathVariable Integer id) {
-        return EventoResponse.from(eventoService.buscar(id));
+        return EventoResponse.from(eventoService.buscarPublicado(id));
     }
 
     @PostMapping("/eventos")
@@ -194,6 +232,22 @@ public class ApiController {
     @Operation(summary = "Excluir evento", security = @SecurityRequirement(name = "adminBasic"))
     public ResponseEntity<Void> excluirEvento(@PathVariable Integer id) {
         eventoService.excluir(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/cursos/{id}/inscricao")
+    @Operation(summary = "Matricular o usuário autenticado em uma turma")
+    public ResponseEntity<Void> matricularCurso(
+            @PathVariable Integer id, @AuthenticationPrincipal Usuario usuario) {
+        participacaoService.matricular(id, usuario.getId());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/eventos/{id}/inscricao")
+    @Operation(summary = "Inscrever o usuário autenticado como voluntário em um evento")
+    public ResponseEntity<Void> inscreverEvento(
+            @PathVariable Integer id, @AuthenticationPrincipal Usuario usuario) {
+        participacaoService.inscreverEvento(id, usuario.getId());
         return ResponseEntity.noContent().build();
     }
 

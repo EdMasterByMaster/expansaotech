@@ -22,20 +22,20 @@ public class PortalController {
     @GetMapping("/")
     public String inicio(Model model) {
         model.addAttribute("ongs", ongService.listar());
-        model.addAttribute("cursos", cursoService.listar());
-        model.addAttribute("eventos", eventoService.listar());
+        model.addAttribute("cursos", cursoService.listarPublicados());
+        model.addAttribute("eventos", eventoService.listarPublicados());
         return "index";
     }
 
     @GetMapping("/cursos")
     public String cursos(Model model) {
-        model.addAttribute("cursos", cursoService.listar());
+        model.addAttribute("cursos", cursoService.listarPublicados());
         return "cursos";
     }
 
     @GetMapping("/eventos")
     public String eventos(Model model) {
-        model.addAttribute("eventos", eventoService.listar());
+        model.addAttribute("eventos", eventoService.listarPublicados());
         return "eventos";
     }
 

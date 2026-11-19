@@ -13,6 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Nationalized;
 
@@ -42,6 +43,18 @@ public class Evento {
     @NotNull
     @Column(name = "data_hora", nullable = false)
     private LocalDateTime dataHora;
+
+    @Column(name = "data_inicio")
+    private LocalDateTime dataInicio;
+
+    @Column(name = "data_termino")
+    private LocalDateTime dataTermino;
+
+    @Column(name = "voluntarios_necessarios", nullable = false)
+    private int voluntariosNecessarios;
+
+    @Column(nullable = false)
+    private boolean publicado = true;
 
     @NotBlank
     @Size(max = 255)
@@ -91,6 +104,41 @@ public class Evento {
 
     public void setDataHora(LocalDateTime dataHora) {
         this.dataHora = dataHora;
+    }
+
+    public LocalDateTime getDataInicio() {
+        return dataInicio == null ? dataHora : dataInicio;
+    }
+
+    public void setDataInicio(LocalDateTime dataInicio) {
+        this.dataInicio = dataInicio;
+        if (dataInicio != null) {
+            this.dataHora = dataInicio;
+        }
+    }
+
+    public LocalDateTime getDataTermino() {
+        return dataTermino == null ? getDataInicio() : dataTermino;
+    }
+
+    public void setDataTermino(LocalDateTime dataTermino) {
+        this.dataTermino = dataTermino;
+    }
+
+    public int getVoluntariosNecessarios() {
+        return voluntariosNecessarios;
+    }
+
+    public void setVoluntariosNecessarios(int voluntariosNecessarios) {
+        this.voluntariosNecessarios = voluntariosNecessarios;
+    }
+
+    public boolean isPublicado() {
+        return publicado;
+    }
+
+    public void setPublicado(boolean publicado) {
+        this.publicado = publicado;
     }
 
     public String getLocalEvento() {

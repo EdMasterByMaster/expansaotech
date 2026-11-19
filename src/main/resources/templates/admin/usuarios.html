@@ -23,6 +23,10 @@
                 <td th:text="${usuario.tipo.valorBanco}"></td>
                 <td class="table-actions">
                     <a class="text-link" th:href="@{/admin/usuarios/{id}/editar(id=${usuario.id})}">Editar</a>
+                    <form th:if="${usuario.tipo.name() == 'COLABORADOR' and !usuario.emailVerificado}"
+                          th:action="@{/admin/usuarios/{id}/convite(id=${usuario.id})}" method="post">
+                        <button class="text-button" type="submit">Reenviar ativação</button>
+                    </form>
                     <form th:action="@{/admin/usuarios/{id}/excluir(id=${usuario.id})}" method="post">
                         <button class="text-button danger" type="submit">Excluir</button>
                     </form>

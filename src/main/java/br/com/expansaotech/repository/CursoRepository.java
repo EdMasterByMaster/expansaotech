@@ -6,8 +6,14 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CursoRepository extends JpaRepository<Curso, Integer> {
-    @EntityGraph(attributePaths = {"ong", "professor", "professor.usuario"})
+    @EntityGraph(attributePaths = {"ong", "professor", "professor.usuario", "diasSemana"})
     List<Curso> findAllByOrderByTituloAsc();
+
+    @EntityGraph(attributePaths = {"ong", "professor", "professor.usuario", "diasSemana"})
+    List<Curso> findAllByPublicadoTrueOrderByTituloAsc();
+
+    @EntityGraph(attributePaths = {"ong", "professor", "professor.usuario", "diasSemana"})
+    java.util.Optional<Curso> findByIdAndPublicadoTrue(Integer id);
 
     @EntityGraph(attributePaths = {"ong", "professor", "professor.usuario"})
     @Override

@@ -28,28 +28,60 @@ public class OngService {
 
     @Transactional
     public Ong salvar(OngInput input) {
+        validarCnpj(input.cnpj());
         Ong ong = new Ong();
-        ong.setCnpj(input.cnpj());
-        ong.setNome(input.nome());
-        ong.setEmail(input.email());
-        ong.setTelefone(input.telefone());
-        ong.setFotoUrl(input.fotoUrl());
+        aplicar(ong, input);
         return ongRepository.save(ong);
     }
 
     @Transactional
     public Ong atualizar(Integer id, OngInput input) {
+        validarCnpj(input.cnpj());
         Ong ong = buscar(id);
-        ong.setCnpj(input.cnpj());
-        ong.setNome(input.nome());
-        ong.setEmail(input.email());
-        ong.setTelefone(input.telefone());
-        ong.setFotoUrl(input.fotoUrl());
+        aplicar(ong, input);
         return ongRepository.save(ong);
     }
 
     @Transactional
     public void excluir(Integer id) {
         ongRepository.delete(buscar(id));
+    }
+
+    private void aplicar(Ong ong, OngInput input) {
+        ong.setCnpj(input.cnpj());
+        ong.setNome(input.nomeFantasia() == null || input.nomeFantasia().isBlank()
+                ? input.nome() : input.nomeFantasia());
+        ong.setRazaoSocial(input.razaoSocial());
+        ong.setNomeFantasia(input.nomeFantasia());
+        ong.setEmail(input.email());
+        ong.setTelefone(input.telefone());
+        ong.setCep(input.cep());
+        ong.setLogradouro(input.logradouro());
+        ong.setNumero(input.numero());
+        ong.setComplemento(input.complemento());
+        ong.setFotoUrl(input.fotoUrl());
+    }
+
+    private void validarCnpj(String value) {
+        String cnpj = value == null ? "" : value.replaceAll("\\D", "");
+        if (cnpj.length() != 14 || cnpj.chars().distinct().count() == 1) {
+            throw new IllegalArgumentException("Informe um CNPJ válido com 14 dígitos.");
+        }
+        int[] weightsFirst = {5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int[] weightsSecond = {6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2};
+        int first = cnpjDigit(cnpj, weightsFirst, 12);
+        int second = cnpjDigit(cnpj, weightsSecond, 13);
+        if (cnpj.charAt(12) - '0' != first || cnpj.charAt(13) - '0' != second) {
+            throw new IllegalArgumentException("Informe um CNPJ válido com dígitos verificadores corretos.");
+        }
+    }
+
+    private int cnpjDigit(String cnpj, int[] weights, int length) {
+        int sum = 0;
+        for (int i = 0; i < length; i++) {
+            sum += (cnpj.charAt(i) - '0') * weights[i];
+        }
+        int remainder = sum % 11;
+        return remainder < 2 ? 0 : 11 - remainder;
     }
 }

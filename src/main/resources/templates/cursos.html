@@ -15,6 +15,8 @@
         <h1>Nossos cursos</h1>
         <p>Atividades para desenvolver talentos, fortalecer vínculos e abrir caminhos.</p>
     </div>
+    <p th:if="${mensagem}" class="alert alert-success" role="status" th:text="${mensagem}"></p>
+    <p th:if="${erro}" class="alert alert-error" role="alert" th:text="${erro}"></p>
     <div class="card-grid">
         <article class="content-card" th:each="curso : ${cursos}">
             <img th:src="${curso.fotoUrl != null and !#strings.isEmpty(curso.fotoUrl) ? curso.fotoUrl : '/img/curso_ti.webp'}"
@@ -24,6 +26,12 @@
                 <p th:text="${curso.descricao}">Descrição do curso.</p>
                 <p class="meta" th:text="|${curso.horario} · ${curso.localCurso}|">Horário · Local</p>
                 <p class="meta" th:text="|Professor(a): ${curso.professor.usuario.nome}|">Professor(a)</p>
+                <p class="meta" th:if="${curso.vagas != null}" th:text="|Vagas: ${curso.vagas}|">Vagas</p>
+                <form th:if="${#authorization.expression('isAuthenticated()')}"
+                      th:action="@{/cursos/{id}/inscricao(id=${curso.id})}" method="post">
+                    <button class="button button-primary" type="submit">Inscrever-se</button>
+                </form>
+                <a th:unless="${#authorization.expression('isAuthenticated()')}" class="button button-secondary" th:href="@{/login}">Entre para se inscrever</a>
             </div>
         </article>
     </div>

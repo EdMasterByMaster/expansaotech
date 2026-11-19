@@ -2,7 +2,7 @@
 
 ## Importante sobre o PDF
 
-O PDF anexado é uma proposta de apresentação de **Gestão de Equipes**. Ele organiza a apresentação em cinco slides, contempla as seções 4.1 a 4.4 e sugere divisão entre duas pessoas; não especifica oito fluxos de negócio para a aplicação. Para deixar a entrega do sistema demonstrável, este roteiro define oito processos da API, aproveitando o padrão do projeto de referência (`AppController`, DTOs, Maven e Swagger) e mantendo persistência real no SQL Server em vez da lista em memória usada no exemplo do café.
+O relatório de **Gestão de Equipes** organiza a apresentação em cinco slides e descreve os fluxos mínimos do sistema. O mapeamento desses dez processos está em [`fluxos-relatorio-gestao-equipes.md`](fluxos-relatorio-gestao-equipes.md). Este documento mantém um roteiro de oito operações da API para demonstrar os cadastros e relacionamentos, seguindo a organização do projeto de referência (`AppController`, DTOs, Maven e Swagger), com persistência real no SQL Server.
 
 ## Oito processos da aplicação para demonstrar
 
@@ -25,7 +25,7 @@ Cadastro de ONG:
 
 ```json
 {
-  "cnpj": "12.345.678/0001-90",
+  "cnpj": "11.222.333/0001-81",
   "nome": "Associação Expansão Cultural",
   "email": "contato@exemplo.org",
   "telefone": "(11) 5555-0100",

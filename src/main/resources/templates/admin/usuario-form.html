@@ -25,6 +25,9 @@
         <select id="tipo" th:field="*{tipo}" required>
             <option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo.valorBanco}"></option>
         </select>
+        <label for="cargo">Cargo / função</label>
+        <input id="cargo" th:field="*{cargo}" maxlength="100">
+        <small class="field-error" th:errors="*{cargo}"></small>
         <label for="especialidade">Especialidade (obrigatória para professor)</label>
         <input id="especialidade" th:field="*{especialidade}" maxlength="255">
         <small class="field-error" th:errors="*{especialidade}"></small>

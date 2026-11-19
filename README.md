@@ -6,13 +6,18 @@ Aplicação web da Associação Expansão Cultural: portal público, painel admi
 
 - Portal público com cursos e eventos publicados.
 - Login administrativo; senhas armazenadas com BCrypt e sem credenciais padrão.
+- Cadastro público de aluno, voluntário e doador com ativação por e-mail; convites de ativação para colaboradores criados pela administração.
+- Bloqueio temporário de login depois de cinco tentativas inválidas e direcionamento para conclusão do perfil no primeiro acesso.
+- Perfil com CPF, endereço, telefone, data de nascimento, interesses e dias de disponibilidade.
 - Recuperação de senha por link de uso único enviado ao e-mail cadastrado.
 - Painel para cadastrar, consultar, editar e excluir ONGs, usuários, professores, cursos e eventos.
+- Turmas de informática e aulas de dança com agenda, faixa etária, capacidade e verificação de conflitos de horário/local/professor.
+- Inscrição de usuários em turmas e de voluntários em ações/eventos, respeitando publicação, capacidade e faixa etária.
 - API REST JSON para as mesmas entidades e regras, com validação e autenticação HTTP Basic para operações administrativas.
 - Schema SQL Server baseado nas entidades e relações do modelo fornecido: `Ong`, `Usuario`, `Professor`, `Curso` e `Evento`.
 - Interface responsiva que reaproveita a identidade visual e as imagens existentes.
 
-O modelo fornecido não inclui inscrições, capacidade de eventos, pagamentos ou e-commerce; esses recursos não fazem parte deste escopo. A landing page da raiz continua disponível para GitHub Pages como versão estática; o backend Spring precisa ser executado em um host Java/Docker e não pode ser servido pelo GitHub Pages.
+O projeto mantém SQL Server e páginas HTML/CSS renderizadas pelo servidor, conforme a arquitetura previamente estabelecida; inscrições e capacidade de turmas/eventos foram acrescentadas ao modelo para atender aos fluxos do relatório. Pagamentos e e-commerce não fazem parte deste escopo. A landing page da raiz continua disponível para GitHub Pages como versão estática; o backend Spring precisa ser executado em um host Java/Docker e não pode ser servido pelo GitHub Pages.
 
 ## Executar a aplicação completa com Docker
 
@@ -62,12 +67,13 @@ Por padrão, a aplicação conecta a `localhost:1433/Expansaodb`. É possível s
 - Instalação nova: o Compose executa `sql/schema.sql`; também é possível aplicá-lo manualmente com `sqlcmd`.
 - Banco já criado com o DDL original informado: faça backup e aplique uma única vez `sql/migration-original-model-to-unicode.sql` antes de iniciar a nova versão. O script amplia campos textuais para Unicode e converte datas para `DATETIME2`, preservando os registros e relacionamentos existentes. No Windows, com o serviço `db` iniciado, execute `./sql/migrate-original-model.ps1`.
 - Banco já atualizado para a versão anterior da aplicação: aplique `sql/migration-add-password-reset-tokens.sql` antes de iniciar esta versão, para criar a tabela de tokens de redefinição. No PowerShell, com `DB_PASSWORD` configurada, execute `sqlcmd -S localhost,1433 -U sa -P "$env:DB_PASSWORD" -C -i .\sql\migration-add-password-reset-tokens.sql`.
+- Em seguida, atualize bancos já existentes com `sql/migration-report-requirements.sql`. O script acrescenta os campos de perfil, agenda, modalidades, publicações, ativações e inscrições, preservando registros. Faça backup antes; execute `sqlcmd -S tcp:127.0.0.1,PORTA -U sa -P "$env:DB_PASSWORD" -C -i .\sql\migration-report-requirements.sql` com a porta configurada para sua instância.
 - O schema preserva as chaves e exclusões em cascata do modelo para ONG/eventos/cursos e usuário/professor; a exclusão de professor referenciado por curso é bloqueada.
 - As datas de cadastro/criação usam UTC. Configure datas de eventos no horário local pretendido pela ONG.
 
 ## Recuperação de senha
 
-Na tela `/login`, o usuário pode acessar **Esqueci minha senha**. A solicitação sempre mostra a mesma confirmação, exista ou não uma conta para o e-mail informado. O link expira em 30 minutos, só pode ser usado uma vez e o banco armazena apenas o hash do token. A nova senha deve ter ao menos 12 caracteres, respeitar o limite de 72 bytes do BCrypt e é gravada com BCrypt.
+Na tela `/login`, o usuário pode acessar **Esqueci minha senha**. A solicitação sempre mostra a mesma confirmação, exista ou não uma conta para o e-mail informado. O link expira em 30 minutos, só pode ser usado uma vez e o banco armazena apenas o hash do token. A nova senha deve ter ao menos 12 caracteres, respeitar o limite de 72 bytes do BCrypt e é gravada com BCrypt. A conta criada em `/cadastro` e os convites de colaboradores também usam links de ativação únicos, válidos por 24 horas. Após ativar e entrar, o usuário é direcionado a `/perfil` para completar seus dados.
 
 O envio real depende de um servidor SMTP. Configure `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM`, `MAIL_AUTH` e `MAIL_STARTTLS_ENABLED` no `.env`; configure `APP_PUBLIC_BASE_URL` com a URL pública usada nos links enviados. Os valores de exemplo apontam para `localhost:1025` e não configuram um servidor de e-mail. Sem SMTP disponível, o sistema mantém a resposta genérica e registra a falha no log do servidor; nenhum token é exposto na página ou no log.
 
@@ -77,15 +83,16 @@ Em produção, use SMTP autenticado e HTTPS em `APP_PUBLIC_BASE_URL`. Ao executa
 
 Base recomendada: `/api/dados`. O status da API responde em `GET /api/dados`. Para seguir o padrão de apresentação do projeto de referência, a API inclui Swagger UI em <http://localhost:8080/swagger-ui/index.html> e a especificação OpenAPI em <http://localhost:8080/v3/api-docs>. Nas operações protegidas, use **Authorize** na interface Swagger e informe a conta administrativa.
 
-Os catálogos `GET /api/dados/cursos` e `GET /api/dados/eventos` são públicos. Demais operações exigem um usuário `Administracao` via HTTP Basic; em produção, use somente HTTPS. As rotas anteriores sob `/api` continuam como aliases de compatibilidade.
+Os catálogos `GET /api/dados/cursos` e `GET /api/dados/eventos` são públicos. A inscrição autenticada em turmas/eventos aceita qualquer usuário habilitado; as demais operações administrativas exigem um usuário `Administracao` via HTTP Basic. Em produção, use somente HTTPS. As rotas anteriores sob `/api` continuam como aliases de compatibilidade.
 
 | Recurso | Operações |
 |---|---|
 | `/api/dados/ongs` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
 | `/api/dados/usuarios` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
 | `/api/dados/professores` | `GET` (professores são mantidos pelo cadastro de usuário do tipo `Professor`) |
-| `/api/dados/cursos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
-| `/api/dados/eventos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}` |
+| `/api/dados/cursos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}`, `POST /{id}/inscricao` |
+| `/api/dados/eventos` | `GET`, `GET /{id}`, `POST`, `PUT /{id}`, `DELETE /{id}`, `POST /{id}/inscricao` |
+| `/api/dados/contas` | `POST` (cadastro público), `POST /ativacao`, `PUT /perfil` (usuário autenticado) |
 
 Exemplo de criação de evento:
 
@@ -111,7 +118,7 @@ mvn package
 
 Os testes usam H2 isolado e cobrem renderização das páginas públicas, acesso anônimo à API, nomes dos tipos e a ausência de JavaScript nos templates. O workflow `.github/workflows/ci.yml` executa `mvn verify` com Java 25 LTS.
 
-O roteiro com **oito processos da API para demonstração**, exemplos de requisição e a divisão sugerida dos cinco slides do PDF está em [`docs/apresentacao-api.md`](docs/apresentacao-api.md). O PDF é um guia de gestão de equipe, não uma especificação de oito processos do sistema; os oito fluxos foram organizados para apresentar os cadastros e relacionamentos implementados.
+O mapeamento dos **dez processos mínimos do relatório** para telas, endpoints, regras e migração SQL Server está em [`docs/fluxos-relatorio-gestao-equipes.md`](docs/fluxos-relatorio-gestao-equipes.md). O roteiro de demonstração da API e apresentação continua em [`docs/apresentacao-api.md`](docs/apresentacao-api.md).
 
 ## Organização do projeto
 

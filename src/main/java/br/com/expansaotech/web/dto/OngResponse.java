@@ -10,10 +10,17 @@ public record OngResponse(
         String email,
         String telefone,
         String fotoUrl,
-        LocalDateTime dataCadastro) {
+        LocalDateTime dataCadastro,
+        String razaoSocial,
+        String nomeFantasia,
+        String cep,
+        String logradouro,
+        String numero,
+        String complemento) {
 
     public static OngResponse from(Ong ong) {
         return new OngResponse(ong.getId(), ong.getCnpj(), ong.getNome(), ong.getEmail(),
-                ong.getTelefone(), ong.getFotoUrl(), ong.getDataCadastro());
+                ong.getTelefone(), ong.getFotoUrl(), ong.getDataCadastro(), ong.getRazaoSocial(),
+                ong.getNomeFantasia(), ong.getCep(), ong.getLogradouro(), ong.getNumero(), ong.getComplemento());
     }
 }
