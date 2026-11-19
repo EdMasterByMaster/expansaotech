@@ -131,6 +131,39 @@ textarea:focus-visible {
   color: #ffd5a5;
 }
 
+.portal-welcome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1.5rem clamp(1rem, 5vw, 5rem);
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.portal-welcome h2 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.portal-welcome p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+}
+
+.portal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.button-outline {
+  color: var(--red-dark);
+  background: transparent;
+  border: 1px solid currentColor;
+}
+
 .section {
   padding: clamp(3rem, 6vw, 5.5rem) clamp(1rem, 5vw, 5rem);
 }
@@ -491,6 +524,11 @@ tr:last-child td {
     flex-direction: column;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+  }
+
+  .portal-welcome {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .site-header nav {

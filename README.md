@@ -5,7 +5,7 @@ Aplicação web da Associação Expansão Cultural: portal público, painel admi
 ## Funcionalidades
 
 - Portal público com cursos e eventos publicados.
-- Login administrativo; senhas armazenadas com BCrypt e sem credenciais padrão.
+- Login por perfil com início geral do portal e atalhos de acordo com a função; senhas armazenadas com BCrypt e sem credenciais padrão.
 - Cadastro público de aluno, voluntário e doador com ativação por e-mail; convites de ativação para colaboradores criados pela administração.
 - Bloqueio temporário de login depois de cinco tentativas inválidas e direcionamento para conclusão do perfil no primeiro acesso.
 - Perfil com CPF, endereço, telefone, data de nascimento, interesses e dias de disponibilidade.
@@ -27,7 +27,7 @@ Requisitos: Docker Desktop com Docker Compose.
 2. Gere e configure uma senha forte para `MSSQL_SA_PASSWORD` (SQL Server exige senha complexa). Para criar o primeiro administrador, configure também `APP_ADMIN_EMAIL`, `APP_ADMIN_PASSWORD` (mínimo de 12 caracteres), `APP_ADMIN_CPF` e, opcionalmente, `APP_ADMIN_NAME`. As três variáveis do administrador são necessárias em conjunto. Sem elas, o app inicia sem usuário administrativo inicial.
 3. Para habilitar recuperação de senha, configure as variáveis SMTP descritas na seção **Recuperação de senha**.
 4. Execute `docker compose up --build`.
-5. Acesse <http://localhost:8080>; o portal público fica em `/`, e a administração em `/login`.
+5. Acesse <http://localhost:8080>; o portal público fica em `/`. Após o login, todos os perfis chegam ao início geral, com atalhos próprios para sua função. Administradores acessam o painel em `/admin`; usuários com perfil incompleto são direcionados a `/perfil` antes de continuar.
 
 O Compose inicia o SQL Server, aguarda a disponibilidade do banco, aplica `sql/schema.sql` quando as tabelas ainda não existem e inicia a aplicação. O volume `expansaodb-data` preserva os dados entre reinicializações. Para encerrar, use `docker compose down`; para apagar os dados, remova explicitamente o volume `expansaodb-data`.
 

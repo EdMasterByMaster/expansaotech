@@ -10,6 +10,27 @@
 <body>
 <div th:replace="~{fragments/layout :: header}"></div>
 <main>
+    <section class="portal-welcome" sec:authorize="isAuthenticated()">
+        <div>
+            <p class="eyebrow">Área do usuário</p>
+            <h2>Bem-vindo de volta!</h2>
+            <p>Este é o início do portal: consulte cursos, eventos e informações disponíveis para toda a comunidade.</p>
+        </div>
+        <nav class="portal-actions" aria-label="Atalhos da sua conta">
+            <a class="button" th:href="@{/cursos}">Explorar cursos</a>
+            <a class="button button-outline" th:href="@{/eventos}">Ver eventos</a>
+            <a class="button button-outline" sec:authorize="hasRole('PROFESSOR')" th:href="@{/cursos}">
+                Área do professor
+            </a>
+            <a class="button button-outline" sec:authorize="hasRole('DOADOR')" th:href="@{/eventos}">
+                Acompanhar iniciativas
+            </a>
+            <a class="button button-outline" sec:authorize="hasRole('ADMIN')" th:href="@{/admin}">
+                Administração
+            </a>
+            <a class="text-link" th:href="@{/perfil}">Meu perfil</a>
+        </nav>
+    </section>
     <section class="hero">
         <div class="hero-copy">
             <p class="eyebrow">Associação Expansão Cultural</p>

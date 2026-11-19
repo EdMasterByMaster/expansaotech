@@ -67,9 +67,6 @@ public class SecurityConfig {
             Object principal = authentication.getPrincipal();
             if (principal instanceof Usuario usuario && !usuario.isPerfilCompleto()) {
                 response.sendRedirect("/perfil");
-            } else if (authentication.getAuthorities().stream()
-                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
-                response.sendRedirect("/admin");
             } else {
                 response.sendRedirect("/");
             }

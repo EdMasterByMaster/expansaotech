@@ -10,10 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import br.com.expansaotech.domain.Usuario;
+import br.com.expansaotech.domain.UsuarioTipo;
+import br.com.expansaotech.repository.UsuarioRepository;
+import java.util.UUID;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -21,6 +26,12 @@ import org.springframework.test.web.servlet.MockMvc;
 class ApiSecurityTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     void catalogosRestSaoPublicos() throws Exception {
@@ -70,6 +81,50 @@ class ApiSecurityTest {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"_csrf\"")));
+    }
+
+    @Test
+    void inicioExibeAtalhosConformePerfilAutenticado() throws Exception {
+        mockMvc.perform(get("/").with(
+                        org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+                                .user("admin").roles("ADMIN")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Administração")))
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Bem-vindo de volta!")));
+
+        mockMvc.perform(get("/").with(
+                        org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+                                .user("professor").roles("PROFESSOR")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Área do professor")));
+
+        mockMvc.perform(get("/").with(
+                        org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+                                .user("doador").roles("DOADOR")))
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("Acompanhar iniciativas")));
+    }
+
+    @Test
+    void loginAdministrativoRedirecionaAoInicioGeral() throws Exception {
+        String email = "admin-" + UUID.randomUUID() + "@test.local";
+        String senha = "senha-de-teste-segura";
+        Usuario admin = new Usuario();
+        admin.setNome("Admin de teste");
+        admin.setEmail(email);
+        admin.setSenha(passwordEncoder.encode(senha));
+        admin.setTipo(UsuarioTipo.ADMINISTRACAO);
+        admin.setPerfilCompleto(true);
+        usuarioRepository.saveAndFlush(admin);
+
+        try {
+            mockMvc.perform(org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders
+                            .formLogin().user(email).password(senha))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(header().string("Location", "/"));
+        } finally {
+            usuarioRepository.delete(admin);
+        }
     }
 
     @Test
